@@ -24,3 +24,8 @@ export interface ChatAPIPayload {
   chatSettings: ChatSettings
   messages: Tables<"messages">[]
 }
+
+export interface ChatAPIPayloadV1 {
+  chatSettings: ChatSettings
+  messages: Tables<"messages">[]
+}
