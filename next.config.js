@@ -30,3 +30,8 @@ module.exports = withBundleAnalyzer(
     }
   })
 )
+module.exports = {
+  images: {
+    unoptimized: true,
+  },
+};
