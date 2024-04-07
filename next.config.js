@@ -23,15 +23,16 @@ module.exports = withBundleAnalyzer(
           protocol: "https",
           hostname: "**"
         }
-      ]
+      ],
+      unoptimized: true,
     },
     experimental: {
       serverComponentsExternalPackages: ["sharp", "onnxruntime-node"]
     }
   })
 )
-module.exports = {
-  images: {
-    unoptimized: true,
-  },
-};
+// module.exports = {
+//   images: {
+//     unoptimized: true,
+//   },
+// };
