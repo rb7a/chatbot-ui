@@ -35,7 +35,7 @@ export const MessageMarkdown: FC<MessageMarkdownProps> = ({ content }) => {
           }
 
           if (typeof firstChildAsString === "string") {
-            childArray[0] = firstChildAsString.replace("▍", "▍")
+            childArray[0] = firstChildAsString.replace("`▍`", "▍")
           }
 
           const match = /language-(\w+)/.exec(className || "")
