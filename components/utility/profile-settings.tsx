@@ -137,9 +137,9 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
           const data = await response.json();
           if (data && data.data) {
             setKeyUsage({
-              limit: parseFloat(data.data.limit.toFixed(2)),
-              usage: parseFloat(data.data.usage.toFixed(2)),
-              limit_remaining: parseFloat((data.data.limit - data.data.usage).toFixed(2))
+              limit: parseFloat(data.data.limit.toFixed(3)),
+              usage: parseFloat(data.data.usage.toFixed(3)),
+              limit_remaining: parseFloat((data.data.limit - data.data.usage).toFixed(3))
             });
           }
         } catch (error) {
@@ -757,9 +757,9 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
                       onChange={e => setOpenrouterAPIKey(e.target.value)}
                     />
                     <div className="mt-2 flex justify-between text-sm">
-                      <p>Limit: {keyUsage.limit} $</p>
-                      <p>Usage: {keyUsage.usage} $</p>
-                      <p>Remain: {keyUsage.limit_remaining} $</p>
+                      <p>Limit: ${keyUsage.limit}</p>
+                      <p>Usage: ${keyUsage.usage}</p>
+                      <p>Remain: ${keyUsage.limit_remaining}</p>
                     </div>
                   </>
                 )}
