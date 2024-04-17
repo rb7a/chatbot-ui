@@ -756,9 +756,9 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
                       value={openrouterAPIKey}
                       onChange={e => setOpenrouterAPIKey(e.target.value)}
                     />
-      <div className="mt-2 flex justify-between text-sm">
-                      <p>Usage: {keyUsage.usage} $</p>
+                    <div className="mt-2 flex justify-between text-sm">
                       <p>Limit: {keyUsage.limit} $</p>
+                      <p>Usage: {keyUsage.usage} $</p>
                       <p>Remain: {keyUsage.limit_remaining} $</p>
                     </div>
                   </>
