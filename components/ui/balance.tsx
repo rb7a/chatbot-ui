@@ -9,6 +9,7 @@ const balanceLabelVariants = cva(
 )
 
 // 定义容器的样式，使用Flex布局
+// const containerStyle = cva("flex justify-between")
 const containerStyle = cva("flex justify-between")
 
 // 定义Balance组件接收的props类型

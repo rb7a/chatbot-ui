@@ -369,12 +369,10 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
             </SheetTitle>
           </SheetHeader>
 
-          <Tabs defaultValue="profile">
+          <Tabs defaultValue="keys">
             <TabsList className="mt-4 grid w-full grid-cols-2">
               <TabsTrigger value="profile">Profile</TabsTrigger>
               <TabsTrigger value="keys">API Keys</TabsTrigger>
-              {/* <TabsTrigger value="usage">API Keys</TabsTrigger> */}
-
             </TabsList>
 
             <TabsContent className="mt-4 space-y-4" value="profile">
@@ -752,11 +750,13 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
                 ) : (
                   <>
                     <Label>OpenRouter</Label>
-                    <Balance
-                      limit={openrouterkeyUsage.limit}
-                      usage={openrouterkeyUsage.usage}
-                      limit_remaining={openrouterkeyUsage.limit_remaining}
-                    />
+                    <div style={{ marginLeft: '2rem', marginRight: '2rem' }}>
+                      <Balance
+                        limit={openrouterkeyUsage.limit}
+                        usage={openrouterkeyUsage.usage}
+                        limit_remaining={openrouterkeyUsage.limit_remaining}
+                      />
+                    </div>
                     <Input
                       placeholder="OpenRouter API Key"
                       type="password"
