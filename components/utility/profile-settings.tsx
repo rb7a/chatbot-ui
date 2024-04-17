@@ -469,6 +469,35 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
             </TabsContent>
 
             <TabsContent className="mt-4 space-y-4" value="keys">
+
+              <div className="space-y-1">
+                {envKeyMap["openrouter"] ? (
+                  <Label>OpenRouter API key set by admin.</Label>
+                ) : (
+                  <>
+                    <Label>OpenRouter</Label>
+                    <div style={{ marginLeft: '0.5rem', marginRight: '1rem', marginTop: '0.5rem', marginBottom: '0.5rem' }}>
+                      <Balance
+                        limit={openrouterkeyUsage.limit}
+                        usage={openrouterkeyUsage.usage}
+                        limit_remaining={openrouterkeyUsage.limit_remaining}
+                      />
+                    </div>
+                    <Input
+                      placeholder="OpenRouter API Key"
+                      type="password"
+                      value={openrouterAPIKey}
+                      onChange={e => setOpenrouterAPIKey(e.target.value)}
+                    />
+                    {/* <div className="mt-2 flex justify-between text-sm">
+                      <p>Limit: ${keyUsage.limit}</p>
+                      <p>Usage: ${keyUsage.usage}</p>
+                      <p>Remain: ${keyUsage.limit_remaining}</p>
+                    </div> */}
+                  </>
+                )}
+              </div>
+
               <div className="mt-5 space-y-2">
                 <Label className="flex items-center">
                   {useAzureOpenai
@@ -744,33 +773,6 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
                 )}
               </div>
 
-              <div className="space-y-1">
-                {envKeyMap["openrouter"] ? (
-                  <Label>OpenRouter API key set by admin.</Label>
-                ) : (
-                  <>
-                    <Label>OpenRouter</Label>
-                    <div style={{ marginLeft: '0.5rem', marginRight: '1rem', marginTop: '0.5rem', marginBottom: '0.5rem' }}>
-                      <Balance
-                        limit={openrouterkeyUsage.limit}
-                        usage={openrouterkeyUsage.usage}
-                        limit_remaining={openrouterkeyUsage.limit_remaining}
-                      />
-                    </div>
-                    <Input
-                      placeholder="OpenRouter API Key"
-                      type="password"
-                      value={openrouterAPIKey}
-                      onChange={e => setOpenrouterAPIKey(e.target.value)}
-                    />
-                    {/* <div className="mt-2 flex justify-between text-sm">
-                      <p>Limit: ${keyUsage.limit}</p>
-                      <p>Usage: ${keyUsage.usage}</p>
-                      <p>Remain: ${keyUsage.limit_remaining}</p>
-                    </div> */}
-                  </>
-                )}
-              </div>
             </TabsContent>
           </Tabs>
         </div>
