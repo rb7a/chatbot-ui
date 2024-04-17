@@ -671,7 +671,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
                   <Label>Anthropic API key set by admin.</Label>
                 ) : (
                   <>
-                    <Label>Anthropic API Key</Label>
+                    <Label>Anthropic</Label>
                     <Input
                       placeholder="Anthropic API Key"
                       type="password"
@@ -687,7 +687,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
                   <Label>Google Gemini API key set by admin.</Label>
                 ) : (
                   <>
-                    <Label>Google Gemini API Key</Label>
+                    <Label>Google Gemini</Label>
                     <Input
                       placeholder="Google Gemini API Key"
                       type="password"
@@ -703,7 +703,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
                   <Label>Mistral API key set by admin.</Label>
                 ) : (
                   <>
-                    <Label>Mistral API Key</Label>
+                    <Label>Mistral</Label>
                     <Input
                       placeholder="Mistral API Key"
                       type="password"
@@ -719,7 +719,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
                   <Label>Groq API key set by admin.</Label>
                 ) : (
                   <>
-                    <Label>Groq API Key</Label>
+                    <Label>Groq</Label>
                     <Input
                       placeholder="Groq API Key"
                       type="password"
@@ -735,7 +735,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
                   <Label>Perplexity API key set by admin.</Label>
                 ) : (
                   <>
-                    <Label>Perplexity API Key</Label>
+                    <Label>Perplexity</Label>
                     <Input
                       placeholder="Perplexity API Key"
                       type="password"
@@ -751,7 +751,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
                   <Label>OpenRouter API key set by admin.</Label>
                 ) : (
                   <>
-                    <Label>OpenRouter API Key</Label>
+                    <Label>OpenRouter</Label>
                     <Balance
                       limit={openrouterkeyUsage.limit}
                       usage={openrouterkeyUsage.usage}
