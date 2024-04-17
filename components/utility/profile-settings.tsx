@@ -32,6 +32,8 @@ import { Button } from "../ui/button"
 import ImagePicker from "../ui/image-picker"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
+import { Balance } from "../ui/balance"
+
 import { LimitDisplay } from "../ui/limit-display"
 import {
   Sheet,
@@ -121,7 +123,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
     profile?.openrouter_api_key || ""
   )
 
-  const [keyUsage, setKeyUsage] = useState({ limit: 0, usage: 0, limit_remaining: 0 });
+  const [openrouterkeyUsage, setopenrouterKeyUsage] = useState({ limit: 0, usage: 0, limit_remaining: 0 });
 
   useEffect(() => {
     const apiKeyToUse = openrouterAPIKey || profile?.openrouter_api_key;
@@ -136,10 +138,10 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
           });
           const data = await response.json();
           if (data && data.data) {
-            setKeyUsage({
-              limit: parseFloat(data.data.limit.toFixed(3)),
-              usage: parseFloat(data.data.usage.toFixed(3)),
-              limit_remaining: parseFloat((data.data.limit - data.data.usage).toFixed(3))
+            setopenrouterKeyUsage({
+              limit: parseFloat(data.data.limit.toFixed(2)),
+              usage: parseFloat(data.data.usage.toFixed(2)),
+              limit_remaining: parseFloat((data.data.limit - data.data.usage).toFixed(2))
             });
           }
         } catch (error) {
@@ -750,17 +752,22 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
                 ) : (
                   <>
                     <Label>OpenRouter API Key</Label>
+                    <Balance
+                      limit={openrouterkeyUsage.limit}
+                      usage={openrouterkeyUsage.usage}
+                      limit_remaining={openrouterkeyUsage.limit_remaining}
+                    />
                     <Input
                       placeholder="OpenRouter API Key"
                       type="password"
                       value={openrouterAPIKey}
                       onChange={e => setOpenrouterAPIKey(e.target.value)}
                     />
-                    <div className="mt-2 flex justify-between text-sm">
+                    {/* <div className="mt-2 flex justify-between text-sm">
                       <p>Limit: ${keyUsage.limit}</p>
                       <p>Usage: ${keyUsage.usage}</p>
                       <p>Remain: ${keyUsage.limit_remaining}</p>
-                    </div>
+                    </div> */}
                   </>
                 )}
               </div>
