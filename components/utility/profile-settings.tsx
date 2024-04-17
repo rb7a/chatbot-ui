@@ -128,7 +128,12 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
     const fetchKeyUsage = async () => {
       if (apiKeyToUse) {
         try {
-          const response = await fetch(`/api/balance/openrouter?apiKey=${encodeURIComponent(apiKeyToUse)}`);
+          const response = await fetch('https://openrouter.ai/api/v1/auth/key', {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${apiKeyToUse}`
+            }
+          });
           const data = await response.json();
           if (data && data.data) {
             setKeyUsage({
