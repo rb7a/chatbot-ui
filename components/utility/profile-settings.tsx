@@ -125,7 +125,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
 
   useEffect(() => {
     const fetchKeyUsage = async () => {
-      const response = await fetch('/api/balance/openrouter/router');
+      const response = await fetch('/api/balance/openrouter');
       const data = await response.json();
       if (data && data.data) {
         setKeyUsage({
