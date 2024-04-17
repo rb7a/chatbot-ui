@@ -23,7 +23,9 @@ import {
 } from "@tabler/icons-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { FC, useCallback, useContext, useRef, useState } from "react"
+// import { FC, useCallback, useContext, useRef, useState } from "react"
+// import React, { useEffect, useState } from 'react';
+import React, { FC, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { toast } from "sonner"
 import { SIDEBAR_ICON_SIZE } from "../sidebar/sidebar-switcher"
 import { Button } from "../ui/button"
@@ -42,7 +44,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import { TextareaAutosize } from "../ui/textarea-autosize"
 import { WithTooltip } from "../ui/with-tooltip"
 import { ThemeSwitcher } from "./theme-switcher"
-import React, { useEffect, useState } from 'react';
+
 
 interface ProfileSettingsProps { }
 
@@ -742,9 +744,9 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
                       onChange={e => setOpenrouterAPIKey(e.target.value)}
                     />
                     <div className="mt-2 flex justify-between">
-                      <p>Usage: {keyUsage.usage}</p>
-                      <p>Limit: {keyUsage.limit}</p>
-                      <p>Limit Remaining: {keyUsage.limit_remaining}</p>
+                      <p>Usage: {keyUsage.usage} $</p>
+                      <p>Limit: {keyUsage.limit} $</p>
+                      <p>Limit Remaining: {keyUsage.limit_remaining} $</p>
                     </div>
                   </>
                 )}
