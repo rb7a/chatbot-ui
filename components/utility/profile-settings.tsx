@@ -503,10 +503,10 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
                   {useAzureOpenai
                     ? envKeyMap["azure"]
                       ? ""
-                      : "Azure OpenAI API Key"
+                      : "Azure OpenAI"
                     : envKeyMap["openai"]
                       ? ""
-                      : "OpenAI API Key"}
+                      : "OpenAI"}
 
                   <Button
                     className={cn(
