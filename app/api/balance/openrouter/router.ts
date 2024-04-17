@@ -1,18 +1,23 @@
-import { checkApiKey, getServerProfile } from "@/lib/server/server-chat-helpers"
 import { ServerRuntime } from "next"
 import fetch from "node-fetch"
 
 export const runtime: ServerRuntime = "edge"
 
 export async function GET(request: Request) {
-  try {
-    const profile = await getServerProfile()
-    checkApiKey(profile.openrouter_api_key, "OpenRouter")
+  const url = new URL(request.url);
+  const apiKey = url.searchParams.get("apiKey");
 
+  if (!apiKey) {
+    return new Response(JSON.stringify({ message: "API key is required" }), {
+      status: 400
+    });
+  }
+
+  try {
     const response = await fetch('https://openrouter.ai/api/v1/auth/key', {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${profile.openrouter_api_key}`
+        Authorization: `Bearer ${apiKey}`
       }
     });
 

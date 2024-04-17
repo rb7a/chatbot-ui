@@ -124,20 +124,28 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
   const [keyUsage, setKeyUsage] = useState({ limit: 0, usage: 0, limit_remaining: 0 });
 
   useEffect(() => {
+    const apiKeyToUse = openrouterAPIKey || profile?.openrouter_api_key;
     const fetchKeyUsage = async () => {
-      const response = await fetch('/api/balance/openrouter');
-      const data = await response.json();
-      if (data && data.data) {
-        setKeyUsage({
-          limit: data.data.limit,
-          usage: data.data.usage,
-          limit_remaining: data.data.limit - data.data.usage
-        });
+      if (apiKeyToUse) {
+        try {
+          const response = await fetch(`/api/balance/openrouter?apiKey=${encodeURIComponent(apiKeyToUse)}`);
+          const data = await response.json();
+          if (data && data.data) {
+            setKeyUsage({
+              limit: parseFloat(data.data.limit.toFixed(2)),
+              usage: parseFloat(data.data.usage.toFixed(2)),
+              limit_remaining: parseFloat((data.data.limit - data.data.usage).toFixed(2))
+            });
+          }
+        } catch (error) {
+          console.error('Failed to fetch key usage:', error);
+          // 在生产环境中，你可能需要更复杂的错误处理逻辑
+        }
       }
     };
 
     fetchKeyUsage();
-  }, []);
+  }, [openrouterAPIKey, profile?.openrouter_api_key]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
@@ -743,7 +751,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
                       value={openrouterAPIKey}
                       onChange={e => setOpenrouterAPIKey(e.target.value)}
                     />
-                    <div className="mt-2 flex justify-between">
+      <div className="mt-2 flex justify-between text-sm">
                       <p>Usage: {keyUsage.usage} $</p>
                       <p>Limit: {keyUsage.limit} $</p>
                       <p>Limit Remaining: {keyUsage.limit_remaining} $</p>
