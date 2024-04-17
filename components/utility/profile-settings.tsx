@@ -42,10 +42,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import { TextareaAutosize } from "../ui/textarea-autosize"
 import { WithTooltip } from "../ui/with-tooltip"
 import { ThemeSwitcher } from "./theme-switcher"
+import React, { useEffect, useState } from 'react';
 
-interface ProfileSettingsProps {}
+interface ProfileSettingsProps { }
 
-export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
+export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
   const {
     profile,
     setProfile,
@@ -117,6 +118,24 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
   const [openrouterAPIKey, setOpenrouterAPIKey] = useState(
     profile?.openrouter_api_key || ""
   )
+
+  const [keyUsage, setKeyUsage] = useState({ limit: 0, usage: 0, limit_remaining: 0 });
+
+  useEffect(() => {
+    const fetchKeyUsage = async () => {
+      const response = await fetch('/api/balance/openrouter/router');
+      const data = await response.json();
+      if (data && data.data) {
+        setKeyUsage({
+          limit: data.data.limit,
+          usage: data.data.usage,
+          limit_remaining: data.data.limit - data.data.usage
+        });
+      }
+    };
+
+    fetchKeyUsage();
+  }, []);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
@@ -337,6 +356,8 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
             <TabsList className="mt-4 grid w-full grid-cols-2">
               <TabsTrigger value="profile">Profile</TabsTrigger>
               <TabsTrigger value="keys">API Keys</TabsTrigger>
+              {/* <TabsTrigger value="usage">API Keys</TabsTrigger> */}
+
             </TabsList>
 
             <TabsContent className="mt-4 space-y-4" value="profile">
@@ -720,6 +741,11 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
                       value={openrouterAPIKey}
                       onChange={e => setOpenrouterAPIKey(e.target.value)}
                     />
+                    <div className="mt-2 flex justify-between">
+                      <p>Usage: {keyUsage.usage}</p>
+                      <p>Limit: {keyUsage.limit}</p>
+                      <p>Limit Remaining: {keyUsage.limit_remaining}</p>
+                    </div>
                   </>
                 )}
               </div>
