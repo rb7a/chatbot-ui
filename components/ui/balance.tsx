@@ -23,13 +23,13 @@ const Balance: React.FC<BalanceProps> = ({ limit, usage, limit_remaining }) => {
   return (
     <div className={containerStyle()}>
       <LabelPrimitive.Root className={balanceLabelVariants()}>
-        Limit: {limit}
+        {` Limit: $${limit} `}
       </LabelPrimitive.Root>
       <LabelPrimitive.Root className={balanceLabelVariants()}>
-        Usage: {usage}
+        {` Usage: $${usage} `}
       </LabelPrimitive.Root>
       <LabelPrimitive.Root className={balanceLabelVariants()}>
-        Remain: {limit_remaining}
+        {` Remain: $${limit_remaining} `}
       </LabelPrimitive.Root>
     </div>
   )
