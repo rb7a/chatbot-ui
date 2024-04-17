@@ -759,7 +759,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
       <div className="mt-2 flex justify-between text-sm">
                       <p>Usage: {keyUsage.usage} $</p>
                       <p>Limit: {keyUsage.limit} $</p>
-                      <p>Limit Remaining: {keyUsage.limit_remaining} $</p>
+                      <p>Remain: {keyUsage.limit_remaining} $</p>
                     </div>
                   </>
                 )}
