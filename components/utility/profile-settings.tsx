@@ -750,7 +750,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
                 ) : (
                   <>
                     <Label>OpenRouter</Label>
-                    <div style={{ marginLeft: '0.5rem', marginRight: '1rem' }}>
+                    <div style={{ marginLeft: '0.5rem', marginRight: '1rem', marginTop: '0.5rem', marginBottom: '0.5rem' }}>
                       <Balance
                         limit={openrouterkeyUsage.limit}
                         usage={openrouterkeyUsage.usage}
