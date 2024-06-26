@@ -93,7 +93,14 @@ export default async function Login({
   const signUp = async (formData: FormData) => {
     "use server"
 
-    const email = formData.get("email") as string
+    // const email = formData.get("email") as string
+    const emailInput = formData.get("email") as string;
+
+    // 假设用户输入的格式是 example.com@mail
+    const [domain, username] = emailInput.split("@");
+
+    // 将实际的地址格式化为 mail@example.com
+    const email = `${username}@${domain}`;
     const password = formData.get("password") as string
 
     const emailDomainWhitelistPatternsString = await getEnvVarOrEdgeConfigValue(
@@ -199,8 +206,24 @@ export default async function Login({
         >
           Sign Up
         </SubmitButton>
-
-        <div className="text-muted-foreground mt-1 flex justify-center text-sm">
+        <div className="text-muted-foreground mt-1 flex flex-col justify-center text-sm">
+          <div className="flex justify-center">
+            <span className="mr-1">Forgot your password?</span>
+            <button
+              formAction={handleResetPassword}
+              className="text-primary ml-1 underline hover:opacity-80"
+            >
+              Reset
+            </button>
+          </div>
+          <div className="flex justify-center">
+            <span className="mr-1">Note: This website restricts registrations. To register, please contact</span>
+            <a href="mailto:account@apiskey.com" className="text-primary underline hover:opacity-80">
+              account@apiskey.com
+            </a>
+          </div>
+        </div>
+        {/* <div className="text-muted-foreground mt-1 flex justify-center text-sm">
           <span className="mr-1">Forgot your password?</span>
           <button
             formAction={handleResetPassword}
@@ -208,7 +231,7 @@ export default async function Login({
           >
             Reset
           </button>
-        </div>
+        </div> */}
 
         {searchParams?.message && (
           <p className="bg-foreground/10 text-foreground mt-4 p-4 text-center">
