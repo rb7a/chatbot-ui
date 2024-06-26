@@ -121,7 +121,7 @@ export default async function Login({
       const emailMatch = emailWhitelist?.includes(email)
       if (!domainMatch && !emailMatch) {
         return redirect(
-          `/login?message=Email ${email} is not allowed to sign up.`
+          `/login?message=Email ${emailInput} is not allowed to sign up.`
         )
       }
     }
@@ -217,7 +217,7 @@ export default async function Login({
         </div>
 
         <div className="text-muted-foreground mt-1 flex justify-center text-sm">
-          <span className="mr-1">To register, please contact</span>
+          <span className="mr-1">To sign up, please contact</span>
           <a href="mailto:support@apiskey.com" className="text-primary underline hover:opacity-80">
             Support
           </a>
