@@ -206,22 +206,21 @@ export default async function Login({
         >
           Sign Up
         </SubmitButton>
-        <div className="text-muted-foreground mt-1 flex flex-col justify-center text-sm">
-          <div className="flex justify-center">
-            <span className="mr-1">Forgot your password?</span>
-            <button
-              formAction={handleResetPassword}
-              className="text-primary ml-1 underline hover:opacity-80"
-            >
-              Reset
-            </button>
-          </div>
-          <div className="flex justify-center">
-            <span className="mr-1">Note: This website restricts registrations. To register, please contact</span>
-            <a href="mailto:account@apiskey.com" className="text-primary underline hover:opacity-80">
-              account@apiskey.com
-            </a>
-          </div>
+        <div className="text-muted-foreground mt-1 flex justify-center text-sm">
+          <span className="mr-1">Forgot your password?</span>
+          <button
+            formAction={handleResetPassword}
+            className="text-primary ml-1 underline hover:opacity-80"
+          >
+            Reset
+          </button>
+        </div>
+
+        <div className="text-muted-foreground mt-1 flex justify-center text-sm">
+          <span className="mr-1">To register, please contact</span>
+          <a href="mailto:support@apiskey.com" className="text-primary underline hover:opacity-80">
+            Support
+          </a>
         </div>
         {/* <div className="text-muted-foreground mt-1 flex justify-center text-sm">
           <span className="mr-1">Forgot your password?</span>
