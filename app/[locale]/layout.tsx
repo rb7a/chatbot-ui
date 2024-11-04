@@ -10,6 +10,7 @@ import { Inter } from "next/font/google"
 import { cookies } from "next/headers"
 import { ReactNode } from "react"
 import "./globals.css"
+import "katex/dist/katex.min.css"
 
 const inter = Inter({ subsets: ["latin"] })
 const APP_NAME = "Apiskey"

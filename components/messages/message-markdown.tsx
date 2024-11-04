@@ -10,6 +10,15 @@ interface MessageMarkdownProps {
   content: string
 }
 
+const replaceMathDelimiters = (content: string) => {
+  return content
+    .replace(/\\\(/g, "$")
+    .replace(/\\\)/g, "$")
+    .replace(/\\\[/g, "\n$$")
+    .replace(/\\\]/g, "$$\n");
+};
+
+
 export const MessageMarkdown: FC<MessageMarkdownProps> = ({ content }) => {
   return (
     <MessageMarkdownMemoized
@@ -62,7 +71,7 @@ export const MessageMarkdown: FC<MessageMarkdownProps> = ({ content }) => {
         }
       }}
     >
-      {content}
+      {replaceMathDelimiters(content)}
     </MessageMarkdownMemoized>
   )
 }
