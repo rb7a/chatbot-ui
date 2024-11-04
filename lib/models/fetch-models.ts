@@ -79,21 +79,31 @@ export const fetchOllamaModels = async () => {
   }
 }
 
+
 export const fetchOpenRouterModels = async () => {
   try {
-    const response = await fetch("https://openrouter.ai/api/v1/models")
+    const response = await fetch("https://openrouter.ai/api/v1/models", {
+      headers: {
+        "pragma": "no-cache",
+        "priority": "u=1, i",
+        "User-Agent": "Apifox/1.0.0 (https://apifox.com)",
+        "Accept": "*/*",
+        "Host": "openrouter.ai",
+        "Connection": "keep-alive"
+      }
+    });
 
     if (!response.ok) {
-      throw new Error(`OpenRouter server is not responding.`)
+      throw new Error(`OpenRouter server is not responding.`);
     }
 
-    const { data } = await response.json()
+    const { data } = await response.json();
 
     const openRouterModels = data.map(
       (model: {
-        id: string
-        name: string
-        context_length: number
+        id: string;
+        name: string;
+        context_length: number;
       }): OpenRouterLLM => ({
         modelId: model.id as LLMID,
         modelName: model.id,
@@ -103,11 +113,45 @@ export const fetchOpenRouterModels = async () => {
         imageInput: false,
         maxContext: model.context_length
       })
-    )
+    );
 
-    return openRouterModels
+    return openRouterModels;
   } catch (error) {
-    console.error("Error fetching Open Router models: " + error)
-    toast.error("Error fetching Open Router models: " + error)
+    console.error("Error fetching Open Router models: " + error);
+    toast.error("Error fetching Open Router models: " + error);
   }
-}
+};
+
+
+// export const fetchOpenRouterModels = async () => {
+//   try {
+//     const response = await fetch("https://openrouter.ai/api/v1/models")
+
+//     if (!response.ok) {
+//       throw new Error(`OpenRouter server is not responding.`)
+//     }
+
+//     const { data } = await response.json()
+
+//     const openRouterModels = data.map(
+//       (model: {
+//         id: string
+//         name: string
+//         context_length: number
+//       }): OpenRouterLLM => ({
+//         modelId: model.id as LLMID,
+//         modelName: model.id,
+//         provider: "openrouter",
+//         hostedId: model.name,
+//         platformLink: "https://openrouter.dev",
+//         imageInput: false,
+//         maxContext: model.context_length
+//       })
+//     )
+
+//     return openRouterModels
+//   } catch (error) {
+//     console.error("Error fetching Open Router models: " + error)
+//     toast.error("Error fetching Open Router models: " + error)
+//   }
+// }
