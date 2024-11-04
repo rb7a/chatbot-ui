@@ -78,63 +78,53 @@ export const fetchOllamaModels = async () => {
     console.warn("Error fetching Ollama models: " + error)
   }
 }
-
 export const fetchOpenRouterModels = async () => {
+  let data = [];
+
   try {
-    // 尝试从 OpenRouter API 获取模型
     const response = await fetch("https://openrouter.ai/api/v1/models");
 
-    if (!response.ok) {
-      throw new Error(`OpenRouter server is not responding.`);
+    if (response.ok) {
+      const result = await response.json();
+      data = result.data;
+    } else {
+      console.warn("Failed to fetch from remote, trying local file...");
     }
+  } catch (error) {
+    console.error("Error fetching from remote: " + error);
+    console.warn("Falling back to local file...");
+  }
 
-    const { data } = await response.json();
+  // 如果数据仍然为空，则尝试读取本地文件
+  if (data.length === 0) {
+    try {
+      const localResponse = await fetch("/model/openrouter.json");
+      const localResult = await localResponse.json();
+      data = localResult.data;
+    } catch (error) {
+      console.error("Error fetching local file: " + error);
+      toast.error("Error fetching local file: " + error);
+      return []; // 返回空数组以防止后续处理错误
+    }
+  }
 
-    return data.map(
-      (model: {
-        id: string
-        name: string
-        context_length: number
-      }) => ({
-      modelId: model.id,
+  const openRouterModels = data.map(
+    (model: {
+              id: string
+              name: string
+              context_length: number
+            }): OpenRouterLLM => ({
+      modelId: model.id as LLMID,
       modelName: model.id,
       provider: "openrouter",
       hostedId: model.name,
       platformLink: "https://openrouter.dev",
       imageInput: false,
       maxContext: model.context_length,
-    }));
-  } catch (error) {
-    console.error("Error fetching Open Router models from API: " + error);
+    })
+  );
 
-    try {
-      // 尝试从本地文件读取
-      const localResponse = await fetch("/model/openrouter.json");
-      if (!localResponse.ok) {
-        throw new Error(`Local model file not found.`);
-      }
-
-      const { data } = await localResponse.json();
-
-      return data.map(
-              (model: {
-                id: string
-                name: string
-                context_length: number
-              }) => ({
-        modelId: model.id,
-        modelName: model.id,
-        provider: "local",
-        hostedId: model.name,
-        platformLink: "local", // 可以根据需要修改
-        imageInput: false,
-        maxContext: model.context_length,
-      }));
-    } catch (localError) {
-      console.error("Error fetching Open Router models from local file: " + localError);
-      toast.error("Error fetching models: " + localError);
-    }
-  }
+  return openRouterModels;
 };
 
 
@@ -142,11 +132,19 @@ export const fetchOpenRouterModels = async () => {
 //   try {
 //     const response = await fetch("https://openrouter.ai/api/v1/models");
 
+//     if (response.ok) {
+//       const { data } = await response.json()
+//     }
+//     else {const { data } ={}}
+    
 //     if (!response.ok) {
-//       throw new Error(`OpenRouter server is not responding.`)
+
+//       const localResponse = await fetch("/model/openrouter.json");
+//       const { data } = await localResponse.json();
+
 //     }
 
-//     const { data } = await response.json()
+
 
 //     const openRouterModels = data.map(
 //       (model: {
