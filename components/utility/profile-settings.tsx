@@ -46,6 +46,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import { TextareaAutosize } from "../ui/textarea-autosize"
 import { WithTooltip } from "../ui/with-tooltip"
 import { ThemeSwitcher } from "./theme-switcher"
+import { deleteAllChats } from "@/db/chats"
+import { useChatHandler } from "../chat/chat-hooks/use-chat-handler"
+import { DeleteAllChats } from "../sidebar/items/chat/delete-all-chats"
 
 
 interface ProfileSettingsProps { }
@@ -57,10 +60,15 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
     envKeyMap,
     setAvailableHostedModels,
     setAvailableOpenRouterModels,
-    availableOpenRouterModels
+    availableOpenRouterModels,
+    setChats,
+    setChatMessages,
+    setSelectedChat
   } = useContext(ChatbotUIContext)
 
   const router = useRouter()
+
+  const { handleNewChat } = useChatHandler()
 
   const buttonRef = useRef<HTMLButtonElement>(null)
 
@@ -796,6 +804,8 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
               }
             />
           </div>
+
+          <DeleteAllChats profile={profile} />
 
           <div className="ml-auto space-x-2">
             <Button variant="ghost" onClick={() => setIsOpen(false)}>
