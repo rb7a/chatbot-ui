@@ -157,7 +157,7 @@ const AdvancedContent: FC<AdvancedContentProps> = ({
           max={
             isCustomModel
               ? models.find(model => model.model_id === chatSettings.model)
-                  ?.context_length
+                ?.context_length
               : MODEL_LIMITS.MAX_CONTEXT_LENGTH
           }
           step={1}
@@ -241,10 +241,7 @@ const AdvancedContent: FC<AdvancedContentProps> = ({
             <SelectItem value="openai">
               {profile?.use_azure_openai ? "Azure OpenAI" : "OpenAI"}
             </SelectItem>
-
-            {window.location.hostname === "localhost" && (
-              <SelectItem value="local">Local</SelectItem>
-            )}
+            <SelectItem value="local">Local</SelectItem>
           </SelectContent>
         </Select>
       </div>
