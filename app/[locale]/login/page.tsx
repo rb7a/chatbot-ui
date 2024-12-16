@@ -93,14 +93,14 @@ export default async function Login({
   const signUp = async (formData: FormData) => {
     "use server"
 
-    // const email = formData.get("email") as string
-    const emailInput = formData.get("email") as string;
+    const email = formData.get("email") as string
+    // const emailInput = formData.get("email") as string;
 
-    // 假设用户输入的格式是 example.com@mail
-    const [domain, username] = emailInput.split("@");
+    // // 假设用户输入的格式是 example.com@mail
+    // const [domain, username] = emailInput.split("@");
 
-    // 将实际的地址格式化为 mail@example.com
-    const email = `${username}@${domain}`;
+    // // 将实际的地址格式化为 mail@example.com
+    // const email = `${username}@${domain}`;
     const password = formData.get("password") as string
 
     const emailDomainWhitelistPatternsString = await getEnvVarOrEdgeConfigValue(
@@ -121,7 +121,7 @@ export default async function Login({
       const emailMatch = emailWhitelist?.includes(email)
       if (!domainMatch && !emailMatch) {
         return redirect(
-          `/login?message=Email ${emailInput} is not allowed to sign up.`
+          `/login?message=Email ${email} is not allowed to sign up.`
         )
       }
     }
