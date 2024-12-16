@@ -803,7 +803,17 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
                 />
               }
             />
-            <DeleteAllChats profile={profile} />
+
+            <WithTooltip
+              display={
+                <div>
+                  Delete all chats. This action cannot be undone!
+                </div>
+              }
+              trigger={
+                <DeleteAllChats profile={profile} />
+              }
+            />
           </div>
 
           <div className="ml-auto space-x-2">
