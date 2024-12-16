@@ -786,37 +786,61 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
         </div>
 
         <div className="mt-6 flex items-center">
-          <div className="flex items-center space-x-1">
-            <ThemeSwitcher />
+          <ThemeSwitcher />
 
-            <WithTooltip
-              display={
-                <div>
-                  Download Chatbot UI 1.0 data as JSON. Import coming soon!
-                </div>
-              }
-              trigger={
-                <IconFileDownload
-                  className="cursor-pointer hover:opacity-50"
-                  size={32}
-                  onClick={exportLocalStorageAsJSON}
-                />
-              }
-            />
+          <WithTooltip
+            display={
+              <div className="text-sm text-gray-600">
+                Click to download Chatbot UI 1.0 data as a JSON file.<br />
+                (Import feature coming soon!)
+              </div>
+            }
+            trigger={
+              <IconFileDownload
+                className="cursor-pointer hover:opacity-50"
+                size={32}
+                onClick={exportLocalStorageAsJSON}
+                aria-label="Download data"
+              />
+            }
+          />
+
+          <WithTooltip
+            display={
+              <div className="text-sm text-gray-600">
+                Click to delete all chat history.<br />
+                Warning: This action cannot be undone!
+              </div>
+            }
+            trigger={
+              <DeleteAllChats
+                profile={profile}
+                className="cursor-pointer hover:opacity-50"
+                aria-label="Delete all chats"
+              />
+            }
+          />
+
+            <div className="ml-auto flex space-x-2">
+              <Button
+                variant="ghost"
+                onClick={() => setIsOpen(false)}
+                aria-label="Cancel"
+                className="hover:bg-gray-100"
+              >
+                Cancel
+              </Button>
+
+              <Button
+                ref={buttonRef}
+                onClick={handleSave}
+                aria-label="Save changes"
+                className="bg-blue-500 hover:bg-blue-600 text-white"
+              >
+                Save
+              </Button>
+            </div>
           </div>
-
-          <DeleteAllChats profile={profile} />
-
-          <div className="ml-auto space-x-2">
-            <Button variant="ghost" onClick={() => setIsOpen(false)}>
-              Cancel
-            </Button>
-
-            <Button ref={buttonRef} onClick={handleSave}>
-              Save
-            </Button>
-          </div>
-        </div>
       </SheetContent>
     </Sheet>
   )
