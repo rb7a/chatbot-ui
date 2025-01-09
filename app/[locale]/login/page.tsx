@@ -94,13 +94,6 @@ export default async function Login({
     "use server"
 
     const email = formData.get("email") as string
-    // const emailInput = formData.get("email") as string;
-
-    // // 假设用户输入的格式是 example.com@mail
-    // const [domain, username] = emailInput.split("@");
-
-    // // 将实际的地址格式化为 mail@example.com
-    // const email = `${username}@${domain}`;
     const password = formData.get("password") as string
 
     const emailDomainWhitelistPatternsString = await getEnvVarOrEdgeConfigValue(
