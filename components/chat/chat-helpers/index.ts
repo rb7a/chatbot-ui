@@ -280,7 +280,7 @@ export const fetchChatResponse = async (
 
   return response
 }
-
+let incompleteLine = "" // 用于存储未处理的行
 export const processResponse = async (
   response: Response,
   lastChatMessage: ChatMessage,
@@ -301,19 +301,30 @@ export const processResponse = async (
         setToolInUse("none")
 
         try {
-          contentToAdd = isHosted
-            ? chunk
-            : // Ollama's streaming endpoint returns new-line separated JSON
-              // objects. A chunk may have more than one of these objects, so we
-              // need to split the chunk by new-lines and handle each one
-              // separately.
-              chunk
-                .trimEnd()
-                .split("\n")
-                .reduce(
-                  (acc, line) => acc + JSON.parse(line).message.content,
-                  ""
-                )
+          let currentLine = "",
+            contentToAdd = isHosted
+              ? chunk
+              : chunk
+                  .trimEnd()
+                  .split("\n")
+                  .reduce((acc, line) => {
+                    // 将当前行与之前未处理的行结合起来
+                    currentLine = incompleteLine + line
+
+                    try {
+                      currentLine = incompleteLine + line
+                      const parsedLine = JSON.parse(currentLine)
+                      // 解析成功,则清空incompleteLine
+                      incompleteLine = ""
+                      return acc + parsedLine.message.content
+                    } catch (error) {
+                      // 解析失败,检查是否是因为不完整的JSON
+                      console.log("incompleteLine", incompleteLine)
+                      incompleteLine = currentLine
+                      console.debug("currentLine", currentLine)
+                      return acc
+                    }
+                  }, "")
           fullText += contentToAdd
         } catch (error) {
           console.error("Error parsing JSON:", error)
