@@ -79,54 +79,53 @@ export const fetchOllamaModels = async () => {
   }
 }
 export const fetchOpenRouterModels = async () => {
-  let data = [];
+  let data = []
 
   try {
-    const response = await fetch("https://openrouter.ai/api/v1/models");
+    const response = await fetch("https://openrouter.ai/api/v1/models")
 
     if (response.ok) {
-      const result = await response.json();
-      data = result.data;
+      const result = await response.json()
+      data = result.data
     } else {
-      console.warn("Failed to fetch from remote, trying local file...");
+      console.warn("Failed to fetch from remote, trying local file...")
     }
   } catch (error) {
-    console.error("Error fetching from remote: " + error);
-    console.warn("Falling back to local file...");
+    console.error("Error fetching from remote: " + error)
+    console.warn("Falling back to local file...")
   }
 
   // 如果数据仍然为空，则尝试读取本地文件
   if (data.length === 0) {
     try {
-      const localResponse = await fetch("/model/openrouter.json");
-      const localResult = await localResponse.json();
-      data = localResult.data;
+      const localResponse = await fetch("/model/openrouter.json")
+      const localResult = await localResponse.json()
+      data = localResult.data
     } catch (error) {
-      console.error("Error fetching local file: " + error);
-      toast.error("Error fetching local file: " + error);
-      return []; // 返回空数组以防止后续处理错误
+      console.error("Error fetching local file: " + error)
+      toast.error("Error fetching local file: " + error)
+      return [] // 返回空数组以防止后续处理错误
     }
   }
 
   const openRouterModels = data.map(
     (model: {
-              id: string
-              name: string
-              context_length: number
-            }): OpenRouterLLM => ({
+      id: string
+      name: string
+      context_length: number
+    }): OpenRouterLLM => ({
       modelId: model.id as LLMID,
       modelName: model.id,
       provider: "openrouter",
       hostedId: model.name,
       platformLink: "https://openrouter.dev",
       imageInput: false,
-      maxContext: model.context_length,
+      maxContext: model.context_length
     })
-  );
+  )
 
-  return openRouterModels;
-};
-
+  return openRouterModels
+}
 
 // export const fetchOpenRouterModels = async () => {
 //   try {
@@ -136,15 +135,13 @@ export const fetchOpenRouterModels = async () => {
 //       const { data } = await response.json()
 //     }
 //     else {const { data } ={}}
-    
+
 //     if (!response.ok) {
 
 //       const localResponse = await fetch("/model/openrouter.json");
 //       const { data } = await localResponse.json();
 
 //     }
-
-
 
 //     const openRouterModels = data.map(
 //       (model: {

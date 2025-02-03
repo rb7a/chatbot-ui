@@ -26,7 +26,7 @@ import {
 import { AssistantImage } from "@/types/images/assistant-image"
 import { VALID_ENV_KEYS } from "@/types/valid-keys"
 import { useRouter } from "next/navigation"
-import { FC, useEffect, useState,useCallback } from "react"
+import { FC, useEffect, useState, useCallback } from "react"
 
 interface GlobalStateProps {
   children: React.ReactNode
@@ -122,7 +122,7 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
   // TOOL STORE
   const [selectedTools, setSelectedTools] = useState<Tables<"tools">[]>([])
   const [toolInUse, setToolInUse] = useState<string>("none")
-  
+
   const fetchStartingData = useCallback(async () => {
     const session = (await supabase.auth.getSession()).data.session
 
@@ -166,7 +166,7 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
 
       return profile
     }
-  },[router])
+  }, [router])
   useEffect(() => {
     ;(async () => {
       const profile = await fetchStartingData()

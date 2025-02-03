@@ -157,7 +157,7 @@ const AdvancedContent: FC<AdvancedContentProps> = ({
           max={
             isCustomModel
               ? models.find(model => model.model_id === chatSettings.model)
-                ?.context_length
+                  ?.context_length
               : MODEL_LIMITS.MAX_CONTEXT_LENGTH
           }
           step={1}

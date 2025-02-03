@@ -189,7 +189,7 @@ export const Message: FC<MessageProps> = ({
       onMouseLeave={() => setIsHovering(false)}
       onKeyDown={handleKeyDown}
     >
-<div className="relative flex w-full flex-col p-6 sm:w-[550px] sm:px-0 md:w-[650px] lg:w-[700px] xl:w-[800px] 2xl:w-[960px] 3xl:w-[1280px] 4xl:w-[1920px]">
+      <div className="3xl:w-[1280px] 4xl:w-[1920px] relative flex w-full flex-col p-6 sm:w-[550px] sm:px-0 md:w-[650px] lg:w-[700px] xl:w-[800px] 2xl:w-[960px]">
         <div className="absolute right-5 top-7 sm:right-0">
           <MessageActions
             onCopy={handleCopy}

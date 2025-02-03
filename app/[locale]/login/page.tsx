@@ -95,7 +95,9 @@ export default async function Login({
 
     const email = formData.get("email") as string
     const password = formData.get("password") as string
+    const invite_code = formData.get("invite_code") as string
 
+    // 邮箱白名单验证
     const emailDomainWhitelistPatternsString = await getEnvVarOrEdgeConfigValue(
       "EMAIL_DOMAIN_WHITELIST"
     )
@@ -108,7 +110,6 @@ export default async function Login({
       ? emailWhitelistPatternsString?.split(",")
       : []
 
-    // If there are whitelist patterns, check if the email is allowed to sign up
     if (emailDomainWhitelist.length > 0 || emailWhitelist.length > 0) {
       const domainMatch = emailDomainWhitelist?.includes(email.split("@")[1])
       const emailMatch = emailWhitelist?.includes(email)
@@ -119,9 +120,30 @@ export default async function Login({
       }
     }
 
+    // 验证邀请码
+    if (!invite_code) {
+      return redirect(`/login?message=Please enter an invite code`)
+    }
+
     const cookieStore = cookies()
     const supabase = createClient(cookieStore)
 
+    // 查询邀请码是否存在
+    const { data: inviteCodeData, error: inviteCodeError } = await supabase
+      .from("invite_code")
+      .select()
+      .eq("invite_code", invite_code)
+
+    if (inviteCodeError) {
+      console.error(inviteCodeError)
+      return redirect(`/login?message=Invalid invite code`)
+    }
+
+    if (inviteCodeData.length === 0) {
+      return redirect(`/login?message=Invalid invite code`)
+    }
+
+    // 如果邀请码有效,则继续注册
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -199,6 +221,14 @@ export default async function Login({
         >
           Sign Up
         </SubmitButton>
+        <Label className="text-md" htmlFor="invite_code">
+          Invitation Code
+        </Label>
+        <Input
+          className="mb-3 rounded-md border bg-inherit px-4 py-2"
+          name="invite_code"
+          placeholder="Enter your invitation code"
+        />
         <div className="text-muted-foreground mt-1 flex justify-center text-sm">
           <span className="mr-1">Forgot your password?</span>
           <button
@@ -211,7 +241,10 @@ export default async function Login({
 
         <div className="text-muted-foreground mt-1 flex justify-center text-sm">
           <span className="mr-1">To sign up, please contact</span>
-          <a href="mailto:support@apiskey.com" className="text-primary underline hover:opacity-80">
+          <a
+            href="mailto:support@apiskey.com"
+            className="text-primary underline hover:opacity-80"
+          >
             Support
           </a>
         </div>

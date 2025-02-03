@@ -14,9 +14,9 @@ const containerStyle = cva("flex justify-between")
 
 // 定义Balance组件接收的props类型
 interface BalanceProps {
-  limit: number;
-  usage: number;
-  limit_remaining: number;
+  limit: number
+  usage: number
+  limit_remaining: number
 }
 
 const Balance: React.FC<BalanceProps> = ({ limit, usage, limit_remaining }) => {

@@ -15,9 +15,8 @@ const replaceMathDelimiters = (content: string) => {
     .replace(/\\\(/g, "$")
     .replace(/\\\)/g, "$")
     .replace(/\\\[/g, "\n$$")
-    .replace(/\\\]/g, "$$\n");
-};
-
+    .replace(/\\\]/g, "$$\n")
+}
 
 export const MessageMarkdown: FC<MessageMarkdownProps> = ({ content }) => {
   return (

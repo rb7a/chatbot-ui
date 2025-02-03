@@ -24,8 +24,8 @@ export async function POST(request: Request) {
       baseURL: "https://openrouter.ai/api/v1",
       defaultHeaders: {
         "HTTP-Referer": "https://apiskey.com", // Optional, for including your app on openrouter.ai rankings.
-        "X-Title": "Apiskey - " +profile.display_name, // Optional. Shows in rankings on openrouter.ai.
-      },
+        "X-Title": "Apiskey - " + profile.display_name // Optional. Shows in rankings on openrouter.ai.
+      }
     })
 
     const response = await openai.chat.completions.create({

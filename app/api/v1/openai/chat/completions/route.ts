@@ -8,7 +8,12 @@ export const runtime: ServerRuntime = "edge"
 export async function POST(request: Request) {
   const json = await request.json()
   // 设置 temperature 和 max_tokens 的默认值
-  const { model, messages, temperature = 0.7, max_tokens = 4096 } = json as {
+  const {
+    model,
+    messages,
+    temperature = 0.7,
+    max_tokens = 4096
+  } = json as {
     model: string
     messages: any[]
     temperature: number
@@ -16,7 +21,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const apiKey = request.headers.get("Authorization")?.replace("Bearer ", "");
+    const apiKey = request.headers.get("Authorization")?.replace("Bearer ", "")
 
     const openai = new OpenAI({
       apiKey: apiKey || ""

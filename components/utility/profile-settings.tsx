@@ -25,7 +25,14 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 // import { FC, useCallback, useContext, useRef, useState } from "react"
 // import React, { useEffect, useState } from 'react';
-import React, { FC, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, {
+  FC,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from "react"
 import { toast } from "sonner"
 import { SIDEBAR_ICON_SIZE } from "../sidebar/sidebar-switcher"
 import { Button } from "../ui/button"
@@ -50,10 +57,9 @@ import { deleteAllChats } from "@/db/chats"
 import { useChatHandler } from "../chat/chat-hooks/use-chat-handler"
 import { DeleteAllChats } from "../sidebar/items/chat/delete-all-chats"
 
+interface ProfileSettingsProps {}
 
-interface ProfileSettingsProps { }
-
-export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
+export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
   const {
     profile,
     setProfile,
@@ -131,36 +137,45 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
     profile?.openrouter_api_key || ""
   )
 
-  const [openrouterkeyUsage, setopenrouterKeyUsage] = useState({ limit: 0, usage: 0, limit_remaining: 0 });
+  const [openrouterkeyUsage, setopenrouterKeyUsage] = useState({
+    limit: 0,
+    usage: 0,
+    limit_remaining: 0
+  })
 
   useEffect(() => {
-    const apiKeyToUse = openrouterAPIKey || profile?.openrouter_api_key;
+    const apiKeyToUse = openrouterAPIKey || profile?.openrouter_api_key
     const fetchKeyUsage = async () => {
       if (apiKeyToUse) {
         try {
-          const response = await fetch('https://openrouter.ai/api/v1/auth/key', {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${apiKeyToUse}`
+          const response = await fetch(
+            "https://openrouter.ai/api/v1/auth/key",
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${apiKeyToUse}`
+              }
             }
-          });
-          const data = await response.json();
+          )
+          const data = await response.json()
           if (data && data.data) {
             setopenrouterKeyUsage({
               limit: parseFloat(data.data.limit.toFixed(2)),
               usage: parseFloat(data.data.usage.toFixed(2)),
-              limit_remaining: parseFloat((data.data.limit - data.data.usage).toFixed(2))
-            });
+              limit_remaining: parseFloat(
+                (data.data.limit - data.data.usage).toFixed(2)
+              )
+            })
           }
         } catch (error) {
-          console.error('Failed to fetch key usage:', error);
+          console.error("Failed to fetch key usage:", error)
           // 在生产环境中，你可能需要更复杂的错误处理逻辑
         }
       }
-    };
+    }
 
-    fetchKeyUsage();
-  }, [openrouterAPIKey, profile?.openrouter_api_key]);
+    fetchKeyUsage()
+  }, [openrouterAPIKey, profile?.openrouter_api_key])
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
@@ -477,14 +492,20 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
             </TabsContent>
 
             <TabsContent className="mt-4 space-y-4" value="keys">
-
               <div className="space-y-1">
                 {envKeyMap["openrouter"] ? (
                   <Label>OpenRouter API key set by admin.</Label>
                 ) : (
                   <>
                     <Label>OpenRouter</Label>
-                    <div style={{ marginLeft: '0.5rem', marginRight: '1rem', marginTop: '0.5rem', marginBottom: '0.5rem' }}>
+                    <div
+                      style={{
+                        marginLeft: "0.5rem",
+                        marginRight: "1rem",
+                        marginTop: "0.5rem",
+                        marginBottom: "0.5rem"
+                      }}
+                    >
                       <Balance
                         limit={openrouterkeyUsage.limit}
                         usage={openrouterkeyUsage.usage}
@@ -780,7 +801,6 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
                   </>
                 )}
               </div>
-
             </TabsContent>
           </Tabs>
         </div>
@@ -806,13 +826,9 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({ }) => {
 
             <WithTooltip
               display={
-                <div>
-                  Delete all chats. This action cannot be undone!
-                </div>
+                <div>Delete all chats. This action cannot be undone!</div>
               }
-              trigger={
-                <DeleteAllChats profile={profile} />
-              }
+              trigger={<DeleteAllChats profile={profile} />}
             />
           </div>
 
