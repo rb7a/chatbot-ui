@@ -314,6 +314,7 @@ export const processResponse = async (
                     try {
                       currentLine = incompleteLine + line
                       const parsedLine = JSON.parse(currentLine)
+                      console.log("parsedLine", parsedLine)
                       // 解析成功,则清空incompleteLine
                       incompleteLine = ""
                       return acc + parsedLine.message.content
