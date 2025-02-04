@@ -24,44 +24,6 @@ const preprocessContent = (content: string) => {
   )
 }
 
-// 定义 ThinkBlock 组件
-const ThinkBlock: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(false) // 折叠状态
-
-  const toggleOpen = () => {
-    setIsOpen(!isOpen) // 切换折叠状态
-  }
-
-  // 根据 children 内容动态设置标题
-  const isThinking = React.Children.toArray(children).some(child => {
-    if (typeof child === "string") {
-      return child.includes("思考中") || child.includes("正在输出")
-    }
-    return false
-  })
-
-  const title = isThinking ? "正在思考" : "思考完毕" // 动态标题
-
-  return (
-    <div className="mb-4">
-      {/* 标题部分,点击切换折叠状态 */}
-      <div
-        className="cursor-pointer font-bold text-blue-500 hover:underline"
-        onClick={toggleOpen}
-      >
-        {title} {isOpen ? "▲" : "▼"}
-      </div>
-
-      {/* 折叠内容部分 */}
-      {isOpen && (
-        <div className="mt-2 border-l-4 border-gray-300 pl-4 text-gray-600 dark:text-gray-400">
-          {children}
-        </div>
-      )}
-    </div>
-  )
-}
-
 export const MessageMarkdown: FC<MessageMarkdownProps> = ({ content }) => {
   const processedContent = preprocessContent(content) // 预处理内容
 
@@ -116,10 +78,6 @@ export const MessageMarkdown: FC<MessageMarkdownProps> = ({ content }) => {
                 {...props}
               />
             )
-          },
-          // 注册 ThinkBlock 组件
-          think({ children }) {
-            return <ThinkBlock>{children}</ThinkBlock>
           }
         } as CustomComponents
       } // 使用扩展的类型
