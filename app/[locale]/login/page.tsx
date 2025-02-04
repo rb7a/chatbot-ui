@@ -207,20 +207,24 @@ export default async function Login({
           Login
         </SubmitButton>
 
-        <SubmitButton
-          formAction={signUp}
-          className="border-foreground/20 mb-2 rounded-md border px-4 py-2"
-        >
-          Sign Up
-        </SubmitButton>
-        <Label className="text-md" htmlFor="invite_user">
-          Invitation User
-        </Label>
-        <Input
-          className="mb-3 rounded-md border bg-inherit px-4 py-2"
-          name="invite_user"
-          placeholder="Enter your invitation code"
-        />
+        {/* 合并后的Invitation User和注册按钮 */}
+        <div className="flex items-center gap-2">
+          <Label className="text-md flex-1" htmlFor="invite_user">
+            Invite
+          </Label>
+          <Input
+            className="rounded-md border bg-inherit px-4 py-2"
+            name="invite_user"
+            placeholder="invite code"
+          />
+          <SubmitButton
+            formAction={signUp}
+            className="border-foreground/20 rounded-md border px-4 py-2"
+          >
+            Sign Up
+          </SubmitButton>
+        </div>
+
         <div className="text-muted-foreground mt-1 flex justify-center text-sm">
           <span className="mr-1">Forgot your password?</span>
           <button
@@ -232,7 +236,7 @@ export default async function Login({
         </div>
 
         <div className="text-muted-foreground mt-1 flex justify-center text-sm">
-          <span className="mr-1">To sign up, please contact</span>
+          <span className="mr-1">To get invite code, please contact</span>
           <a
             href="mailto:support@apiskey.com"
             className="text-primary underline hover:opacity-80"
@@ -240,15 +244,6 @@ export default async function Login({
             Support
           </a>
         </div>
-        {/* <div className="text-muted-foreground mt-1 flex justify-center text-sm">
-          <span className="mr-1">Forgot your password?</span>
-          <button
-            formAction={handleResetPassword}
-            className="text-primary ml-1 underline hover:opacity-80"
-          >
-            Reset
-          </button>
-        </div> */}
 
         {searchParams?.message && (
           <p className="bg-foreground/10 text-foreground mt-4 p-4 text-center">
