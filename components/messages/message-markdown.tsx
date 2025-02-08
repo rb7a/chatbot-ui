@@ -16,11 +16,13 @@ type CustomComponents = Components & {
 }
 
 // 替换 <think> 为 Markdown 兼容直接改成引用
-const preprocessContent = (content: string) => {
-  return content.replace(
-    /<think>([\s\S]*?)<\/think>/g,
-    (_, innerContent) =>
-      `>${innerContent.trim().replace(/\n\n/g, " \n > \n >")}`
+const preprocessContent = (content: string): string => {
+  return content.replace(/>([\s\S]*?)<\/think>/g, (_, innerContent: string) =>
+    innerContent
+      .trim()
+      .split("\n")
+      .map((line: string) => `> ${line}`)
+      .join("\n")
   )
 }
 
