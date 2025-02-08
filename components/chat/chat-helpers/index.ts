@@ -280,7 +280,6 @@ export const fetchChatResponse = async (
 
   return response
 }
-let incompleteLine = "" // 用于存储未处理的行
 export const processResponse = async (
   response: Response,
   lastChatMessage: ChatMessage,
@@ -292,6 +291,7 @@ export const processResponse = async (
 ) => {
   let fullText = ""
   let contentToAdd = ""
+  let incompleteLine = "" // 用于存储未处理的行
 
   if (response.body) {
     await consumeReadableStream(
