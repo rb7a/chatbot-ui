@@ -17,12 +17,19 @@ type CustomComponents = Components & {
 
 // 替换 <think> 为 Markdown 兼容直接改成引用
 const preprocessContent = (content: string): string => {
-  return content.replace(/>([\s\S]*?)<\/think>/g, (_, innerContent: string) =>
-    innerContent
-      .trim()
-      .split("\n")
-      .map((line: string) => `> ${line}`)
-      .join("\n")
+  // 只有当内容以 <think> 开头时,才进行处理
+  if (!content.startsWith("<think>")) {
+    return content
+  }
+
+  return content.replace(
+    /<think>([\s\S]*?)<\/think>/g,
+    (_, innerContent: string) =>
+      innerContent
+        .trim()
+        .split("\n")
+        .map((line: string) => `> ${line}`)
+        .join("\n")
   )
 }
 
