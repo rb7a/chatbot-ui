@@ -3,8 +3,8 @@
 1. **配置git代理**  
    设置git的http和https代理,确保使用正确的代理端口:
    ```bash
-   git config --global http.proxy localhost:8800
-   git config --global https.proxy localhost:8800
+   git config --global http.proxy localhost:8801
+   git config --global https.proxy localhost:8801
    ```
 
 2. **测试连接**  
