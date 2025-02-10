@@ -10,7 +10,8 @@ import { convertBlobToBase64 } from "@/lib/blob-to-b64"
 import {
   fetchHostedModels,
   fetchOllamaModels,
-  fetchOpenRouterModels
+  fetchOpenRouterModels,
+  fetchDeepSeekModels
 } from "@/lib/models/fetch-models"
 import { supabase } from "@/lib/supabase/browser-client"
 import { Tables } from "@/supabase/types"
@@ -21,6 +22,7 @@ import {
   LLM,
   MessageImage,
   OpenRouterLLM,
+  DeepSeekLLM,
   WorkspaceImage
 } from "@/types"
 import { AssistantImage } from "@/types/images/assistant-image"
@@ -57,7 +59,9 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
   const [availableOpenRouterModels, setAvailableOpenRouterModels] = useState<
     OpenRouterLLM[]
   >([])
-
+  const [availableDeepSeekModels, setAvailableDeepSeekModels] = useState<
+    DeepSeekLLM[]
+  >([])
   // WORKSPACE STORE
   const [selectedWorkspace, setSelectedWorkspace] =
     useState<Tables<"workspaces"> | null>(null)
@@ -177,7 +181,24 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
 
         setEnvKeyMap(hostedModelRes.envKeyMap)
         setAvailableHostedModels(hostedModelRes.hostedModels)
+        if (
+          profile["deepseek_api_key"] ||
+          hostedModelRes.envKeyMap["deepseek"]
+        ) {
+          let deepSeekModels
+          if (profile["deepseek_api_key"]) {
+            deepSeekModels = await fetchDeepSeekModels(
+              profile["deepseek_api_key"]
+            )
+          } else {
+            deepSeekModels = await fetchDeepSeekModels(
+              hostedModelRes.envKeyMap["deepseek"]
+            )
+          }
 
+          if (!deepSeekModels) return
+          setAvailableDeepSeekModels(deepSeekModels)
+        }
         if (
           profile["openrouter_api_key"] ||
           hostedModelRes.envKeyMap["openrouter"]
@@ -233,7 +254,8 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
         setAvailableLocalModels,
         availableOpenRouterModels,
         setAvailableOpenRouterModels,
-
+        availableDeepSeekModels,
+        setAvailableDeepSeekModels,
         // WORKSPACE STORE
         selectedWorkspace,
         setSelectedWorkspace,

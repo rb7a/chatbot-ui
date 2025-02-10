@@ -6,6 +6,7 @@ import {
   LLM,
   MessageImage,
   OpenRouterLLM,
+  DeepSeekLLM,
   WorkspaceImage
 } from "@/types"
 import { AssistantImage } from "@/types/images/assistant-image"
@@ -48,7 +49,8 @@ interface ChatbotUIContext {
   setAvailableLocalModels: Dispatch<SetStateAction<LLM[]>>
   availableOpenRouterModels: OpenRouterLLM[]
   setAvailableOpenRouterModels: Dispatch<SetStateAction<OpenRouterLLM[]>>
-
+  availableDeepSeekModels: DeepSeekLLM[]
+  setAvailableDeepSeekModels: Dispatch<SetStateAction<DeepSeekLLM[]>>
   // WORKSPACE STORE
   selectedWorkspace: Tables<"workspaces"> | null
   setSelectedWorkspace: Dispatch<SetStateAction<Tables<"workspaces"> | null>>
@@ -174,6 +176,8 @@ export const ChatbotUIContext = createContext<ChatbotUIContext>({
   setAvailableLocalModels: () => {},
   availableOpenRouterModels: [],
   setAvailableOpenRouterModels: () => {},
+  availableDeepSeekModels: [],
+  setAvailableDeepSeekModels: () => {},
 
   // WORKSPACE STORE
   selectedWorkspace: null,

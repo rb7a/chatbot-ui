@@ -53,6 +53,7 @@ export const Message: FC<MessageProps> = ({
     firstTokenReceived,
     availableLocalModels,
     availableOpenRouterModels,
+    availableDeepSeekModels,
     chatMessages,
     selectedAssistant,
     chatImages,
@@ -137,6 +138,7 @@ export const Message: FC<MessageProps> = ({
     })),
     ...LLM_LIST,
     ...availableLocalModels,
+    ...availableDeepSeekModels,
     ...availableOpenRouterModels
   ].find(llm => llm.modelId === message.model) as LLM
 

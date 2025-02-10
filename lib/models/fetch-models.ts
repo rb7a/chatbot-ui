@@ -1,5 +1,5 @@
 import { Tables } from "@/supabase/types"
-import { LLM, LLMID, OpenRouterLLM } from "@/types"
+import { LLM, LLMID, OpenRouterLLM, DeepSeekLLM } from "@/types"
 import { toast } from "sonner"
 import { LLM_LIST_MAP } from "./llm/llm-list"
 
@@ -127,41 +127,67 @@ export const fetchOpenRouterModels = async () => {
   return openRouterModels
 }
 
-// export const fetchOpenRouterModels = async () => {
-//   try {
-//     const response = await fetch("https://openrouter.ai/api/v1/models");
+export const fetchDeepSeekModels = async (deepseek_api_key: any) => {
+  let myHeaders = new Headers()
+  myHeaders.append("Authorization", `Bearer ${deepseek_api_key}`)
 
-//     if (response.ok) {
-//       const { data } = await response.json()
-//     }
-//     else {const { data } ={}}
+  let requestOptions: RequestInit = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow"
+  }
 
-//     if (!response.ok) {
+  let data = []
 
-//       const localResponse = await fetch("/model/openrouter.json");
-//       const { data } = await localResponse.json();
+  try {
+    const response = await fetch(
+      "https://api.deepseek.com/models",
+      requestOptions
+    )
 
-//     }
+    if (response.ok) {
+      const result = await response.json()
+      if (result && Array.isArray(result.data)) {
+        data = result.data
+      }
+    } else {
+      console.warn("Failed to fetch from remote, trying local file...")
+    }
+  } catch (error) {
+    console.error("Error fetching from remote:", error)
+    console.warn("Falling back to local file...")
+  }
 
-//     const openRouterModels = data.map(
-//       (model: {
-//         id: string
-//         name: string
-//         context_length: number
-//       }): OpenRouterLLM => ({
-//         modelId: model.id as LLMID,
-//         modelName: model.id,
-//         provider: "openrouter",
-//         hostedId: model.name,
-//         platformLink: "https://openrouter.dev",
-//         imageInput: false,
-//         maxContext: model.context_length
-//       })
-//     )
+  // 如果数据仍然为空,则尝试读取本地文件
+  if (data.length === 0) {
+    try {
+      const localResponse = await fetch("/model/deepseek.json")
+      if (localResponse.ok) {
+        const localResult = await localResponse.json()
+        if (localResult && Array.isArray(localResult.data)) {
+          data = localResult.data
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching local file:", error)
+      if (typeof toast !== "undefined") {
+        toast.error("Error fetching local file: " + error)
+      }
+      return [] // 返回空数组以防止后续处理错误
+    }
+  }
 
-//     return openRouterModels
-//   } catch (error) {
-//     console.error("Error fetching Open Router models: " + error)
-//     toast.error("Error fetching Open Router models: " + error)
-//   }
-// }
+  const deepSeekModels = data.map(
+    (model: { id: string; object: string; owned_by: string }): DeepSeekLLM => ({
+      modelId: model.id as LLMID,
+      modelName: model.id,
+      provider: "deepseek",
+      hostedId: model.id,
+      platformLink: "https://api.deepseek.com",
+      imageInput: true,
+      maxContext: 8192
+    })
+  )
+
+  return deepSeekModels
+}

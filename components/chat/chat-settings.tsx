@@ -19,7 +19,8 @@ export const ChatSettings: FC<ChatSettingsProps> = ({}) => {
     models,
     availableHostedModels,
     availableLocalModels,
-    availableOpenRouterModels
+    availableOpenRouterModels,
+    availableDeepSeekModels
   } = useContext(ChatbotUIContext)
 
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -59,6 +60,7 @@ export const ChatSettings: FC<ChatSettingsProps> = ({}) => {
     })),
     ...availableHostedModels,
     ...availableLocalModels,
+    ...availableDeepSeekModels,
     ...availableOpenRouterModels
   ]
 

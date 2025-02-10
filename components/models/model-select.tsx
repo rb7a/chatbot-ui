@@ -27,7 +27,8 @@ export const ModelSelect: FC<ModelSelectProps> = ({
     models,
     availableHostedModels,
     availableLocalModels,
-    availableOpenRouterModels
+    availableOpenRouterModels,
+    availableDeepSeekModels
   } = useContext(ChatbotUIContext)
 
   const inputRef = useRef<HTMLInputElement>(null)
@@ -61,6 +62,7 @@ export const ModelSelect: FC<ModelSelectProps> = ({
     })),
     ...availableHostedModels,
     ...availableLocalModels,
+    ...availableDeepSeekModels,
     ...availableOpenRouterModels
   ]
 

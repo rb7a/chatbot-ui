@@ -8,7 +8,8 @@ import {
 } from "@/db/workspaces"
 import {
   fetchHostedModels,
-  fetchOpenRouterModels
+  fetchOpenRouterModels,
+  fetchDeepSeekModels
 } from "@/lib/models/fetch-models"
 import { supabase } from "@/lib/supabase/browser-client"
 import { TablesUpdate } from "@/supabase/types"
@@ -60,6 +61,7 @@ export default function SetupPage() {
   const [groqAPIKey, setGroqAPIKey] = useState("")
   const [perplexityAPIKey, setPerplexityAPIKey] = useState("")
   const [openrouterAPIKey, setOpenrouterAPIKey] = useState("")
+  const [deepseekAPIKey, setDeepseekAPIKey] = useState("")
 
   useEffect(() => {
     ;(async () => {
@@ -88,6 +90,14 @@ export default function SetupPage() {
             const openRouterModels = await fetchOpenRouterModels()
             if (!openRouterModels) return
             setAvailableOpenRouterModels(openRouterModels)
+          }
+
+          if (profile["deepseek_api_key"] || data.envKeyMap["deepseek"]) {
+            const deepSeekModels = await fetchDeepSeekModels(
+              profile["deepseek_api_key"]
+            )
+            if (!deepSeekModels) return
+            setAvailableOpenRouterModels(deepSeekModels)
           }
 
           const homeWorkspaceId = await getHomeWorkspaceByUserId(
@@ -133,6 +143,7 @@ export default function SetupPage() {
       groq_api_key: groqAPIKey,
       perplexity_api_key: perplexityAPIKey,
       openrouter_api_key: openrouterAPIKey,
+      deepseek_api_key: deepseekAPIKey,
       use_azure_openai: useAzureOpenai,
       azure_openai_api_key: azureOpenaiAPIKey,
       azure_openai_endpoint: azureOpenaiEndpoint,

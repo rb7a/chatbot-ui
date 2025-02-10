@@ -8,11 +8,14 @@ import {
 import { updateProfile } from "@/db/profile"
 import { uploadProfileImage } from "@/db/storage/profile-images"
 import { exportLocalStorageAsJSON } from "@/lib/export-old-data"
-import { fetchOpenRouterModels } from "@/lib/models/fetch-models"
+import {
+  fetchOpenRouterModels,
+  fetchDeepSeekModels
+} from "@/lib/models/fetch-models"
 import { LLM_LIST_MAP } from "@/lib/models/llm/llm-list"
 import { supabase } from "@/lib/supabase/browser-client"
 import { cn } from "@/lib/utils"
-import { OpenRouterLLM } from "@/types"
+import { OpenRouterLLM, DeepSeekLLM } from "@/types"
 import {
   IconCircleCheckFilled,
   IconCircleXFilled,
@@ -39,7 +42,9 @@ import { Button } from "../ui/button"
 import ImagePicker from "../ui/image-picker"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
-import { Balance } from "../ui/balance"
+import { BalanceCNY } from "../ui/balanceCNY"
+import { BalanceUSD } from "../ui/balanceUSD"
+
 import { useTranslation } from "react-i18next"
 
 import { LimitDisplay } from "../ui/limit-display"
@@ -67,7 +72,9 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
     envKeyMap,
     setAvailableHostedModels,
     setAvailableOpenRouterModels,
+    setAvailableDeepSeekModels,
     availableOpenRouterModels,
+    availableDeepSeekModels,
     setChats,
     setChatMessages,
     setSelectedChat
@@ -139,45 +146,97 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
     profile?.openrouter_api_key || ""
   )
 
+  const [deepseekAPIKey, setDeepseekAPIKey] = useState(
+    profile?.deepseek_api_key || ""
+  )
   const [openrouterkeyUsage, setopenrouterKeyUsage] = useState({
     limit: 0,
     usage: 0,
     limit_remaining: 0
   })
 
+  const [deepseekkeyUsage, setdeepseekKeyUsage] = useState({
+    total: 0,
+    granted: 0,
+    topped_up: 0
+  })
+
   useEffect(() => {
-    const apiKeyToUse = openrouterAPIKey || profile?.openrouter_api_key
-    const fetchKeyUsage = async () => {
-      if (apiKeyToUse) {
-        try {
-          const response = await fetch(
-            "https://openrouter.ai/api/v1/auth/key",
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${apiKeyToUse}`
-              }
-            }
-          )
-          const data = await response.json()
-          if (data && data.data) {
-            setopenrouterKeyUsage({
-              limit: parseFloat(data.data.limit.toFixed(2)),
-              usage: parseFloat(data.data.usage.toFixed(2)),
-              limit_remaining: parseFloat(
-                (data.data.limit - data.data.usage).toFixed(2)
-              )
-            })
+    const openrouterApiKeyToUse =
+      openrouterAPIKey || profile?.openrouter_api_key
+    const fetchOpenrouterKeyUsage = async () => {
+      if (!openrouterApiKeyToUse) return
+      try {
+        const response = await fetch("https://openrouter.ai/api/v1/auth/key", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${openrouterApiKeyToUse}`
           }
-        } catch (error) {
-          console.error("Failed to fetch key usage:", error)
-          // 在生产环境中，你可能需要更复杂的错误处理逻辑
+        })
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`)
         }
+
+        const data = await response.json()
+        console.log(data)
+        if (data && data.data) {
+          setopenrouterKeyUsage({
+            limit: parseFloat(data.data.limit.toFixed(2)),
+            usage: parseFloat(data.data.usage.toFixed(2)),
+            limit_remaining: parseFloat(
+              (data.data.limit - data.data.usage).toFixed(2)
+            )
+          })
+        }
+      } catch (error) {
+        console.error("Failed to fetch key usage:", error)
       }
     }
 
-    fetchKeyUsage()
+    fetchOpenrouterKeyUsage()
   }, [openrouterAPIKey, profile?.openrouter_api_key])
+
+  useEffect(() => {
+    const deepseekApiKeyToUse = deepseekAPIKey || profile?.deepseek_api_key
+    const fetchDeepseekKeyUsage = async () => {
+      if (!deepseekApiKeyToUse) return
+
+      try {
+        const response = await fetch("https://api.deepseek.com/user/balance", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${deepseekApiKeyToUse}`
+          }
+        })
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`)
+        }
+
+        const data = await response.json()
+        console.log(data)
+
+        if (data && data.balance_infos && data.is_available) {
+          setdeepseekKeyUsage({
+            total: parseFloat(
+              parseFloat(data.balance_infos[0].total_balance).toFixed(2)
+            ),
+            granted: parseFloat(
+              parseFloat(data.balance_infos[0].granted_balance).toFixed(2)
+            ),
+            topped_up: parseFloat(
+              parseFloat(data.balance_infos[0].topped_up_balance).toFixed(2)
+            )
+          })
+        }
+      } catch (error) {
+        console.error("Failed to fetch key usage:", error)
+      }
+    }
+
+    fetchDeepseekKeyUsage()
+  }, [deepseekAPIKey, profile?.deepseek_api_key])
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
@@ -218,7 +277,8 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
       azure_openai_45_turbo_id: azureOpenai45TurboID,
       azure_openai_45_vision_id: azureOpenai45VisionID,
       azure_openai_embeddings_id: azureEmbeddingsID,
-      openrouter_api_key: openrouterAPIKey
+      openrouter_api_key: openrouterAPIKey,
+      deepseek_api_key: deepseekAPIKey
     })
 
     setProfile(updatedProfile)
@@ -233,7 +293,8 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
       "mistral",
       "groq",
       "perplexity",
-      "openrouter"
+      "openrouter",
+      "deepseek"
     ]
 
     providers.forEach(async provider => {
@@ -252,20 +313,37 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
 
       if (!envKeyActive) {
         const hasApiKey = !!updatedProfile[providerKey]
-
-        if (provider === "openrouter") {
-          if (hasApiKey && availableOpenRouterModels.length === 0) {
-            const openrouterModels: OpenRouterLLM[] =
-              await fetchOpenRouterModels()
-            setAvailableOpenRouterModels(prev => {
-              const newModels = openrouterModels.filter(
-                model =>
-                  !prev.some(prevModel => prevModel.modelId === model.modelId)
+        if (provider === "deepseek" || provider === "openrouter") {
+          if (provider === "deepseek") {
+            if (hasApiKey && availableDeepSeekModels.length === 0) {
+              const deepseekModels: DeepSeekLLM[] = await fetchDeepSeekModels(
+                profile.deepseek_api_key
               )
-              return [...prev, ...newModels]
-            })
-          } else {
-            setAvailableOpenRouterModels([])
+              setAvailableDeepSeekModels(prev => {
+                const newModels = deepseekModels.filter(
+                  model =>
+                    !prev.some(prevModel => prevModel.modelId === model.modelId)
+                )
+                return [...prev, ...newModels]
+              })
+            } else {
+              setAvailableDeepSeekModels([])
+            }
+          }
+          if (provider === "openrouter") {
+            if (hasApiKey && availableOpenRouterModels.length === 0) {
+              const openrouterModels: OpenRouterLLM[] =
+                await fetchOpenRouterModels()
+              setAvailableOpenRouterModels(prev => {
+                const newModels = openrouterModels.filter(
+                  model =>
+                    !prev.some(prevModel => prevModel.modelId === model.modelId)
+                )
+                return [...prev, ...newModels]
+              })
+            } else {
+              setAvailableOpenRouterModels([])
+            }
           }
         } else {
           if (hasApiKey && Array.isArray(models)) {
@@ -509,7 +587,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
                         marginBottom: "0.5rem"
                       }}
                     >
-                      <Balance
+                      <BalanceUSD
                         limit={openrouterkeyUsage.limit}
                         usage={openrouterkeyUsage.usage}
                         limit_remaining={openrouterkeyUsage.limit_remaining}
@@ -520,6 +598,36 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
                       type="password"
                       value={openrouterAPIKey}
                       onChange={e => setOpenrouterAPIKey(e.target.value)}
+                    />
+                  </>
+                )}
+              </div>
+
+              <div className="space-y-1">
+                {envKeyMap["deepseek"] ? (
+                  <Label>Deepseek API key set by admin.</Label>
+                ) : (
+                  <>
+                    <Label>Deepseek</Label>
+                    <div
+                      style={{
+                        marginLeft: "0.5rem",
+                        marginRight: "1rem",
+                        marginTop: "0.5rem",
+                        marginBottom: "0.5rem"
+                      }}
+                    >
+                      <BalanceCNY
+                        limit={deepseekkeyUsage.total}
+                        usage={deepseekkeyUsage.granted}
+                        limit_remaining={deepseekkeyUsage.topped_up}
+                      />
+                    </div>
+                    <Input
+                      placeholder="Deepseek API Key"
+                      type="password"
+                      value={deepseekAPIKey}
+                      onChange={e => setDeepseekAPIKey(e.target.value)}
                     />
                   </>
                 )}

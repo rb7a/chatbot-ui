@@ -79,3 +79,7 @@ export interface LLM {
 export interface OpenRouterLLM extends LLM {
   maxContext: number
 }
+
+export interface DeepSeekLLM extends LLM {
+  maxContext: number
+}

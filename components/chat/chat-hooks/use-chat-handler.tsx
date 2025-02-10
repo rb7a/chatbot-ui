@@ -41,6 +41,7 @@ export const useChatHandler = () => {
     setSelectedTools,
     availableLocalModels,
     availableOpenRouterModels,
+    availableDeepSeekModels,
     abortController,
     setAbortController,
     chatSettings,
@@ -216,6 +217,7 @@ export const useChatHandler = () => {
         })),
         ...LLM_LIST,
         ...availableLocalModels,
+        ...availableDeepSeekModels,
         ...availableOpenRouterModels
       ].find(llm => llm.modelId === chatSettings?.model)
 
