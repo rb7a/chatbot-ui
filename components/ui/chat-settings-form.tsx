@@ -19,7 +19,8 @@ import {
 import { Slider } from "./slider"
 import { TextareaAutosize } from "./textarea-autosize"
 import { WithTooltip } from "./with-tooltip"
-
+import { useTranslation } from "react-i18next"
+import { t } from "i18next"
 interface ChatSettingsFormProps {
   chatSettings: ChatSettings
   onChangeChatSettings: (value: ChatSettings) => void
@@ -34,13 +35,14 @@ export const ChatSettingsForm: FC<ChatSettingsFormProps> = ({
   showTooltip = true
 }) => {
   const { profile, models } = useContext(ChatbotUIContext)
+  const { t } = useTranslation()
 
   if (!profile) return null
 
   return (
     <div className="space-y-3">
       <div className="space-y-1">
-        <Label>Model</Label>
+        <Label>{t("Model")}</Label>
 
         <ModelSelect
           selectedModelId={chatSettings.model}
@@ -51,7 +53,7 @@ export const ChatSettingsForm: FC<ChatSettingsFormProps> = ({
       </div>
 
       <div className="space-y-1">
-        <Label>Prompt</Label>
+        <Label>{t("Prompt")}</Label>
 
         <TextareaAutosize
           className="bg-background border-input border-2"
@@ -176,7 +178,6 @@ const AdvancedContent: FC<AdvancedContentProps> = ({
         />
 
         <Label>Chats Include Profile Context</Label>
-
         {showTooltip && (
           <WithTooltip
             delayDuration={0}
@@ -223,7 +224,6 @@ const AdvancedContent: FC<AdvancedContentProps> = ({
 
       <div className="mt-5">
         <Label>Embeddings Provider</Label>
-
         <Select
           value={chatSettings.embeddingsProvider}
           onValueChange={(embeddingsProvider: "openai" | "local") => {

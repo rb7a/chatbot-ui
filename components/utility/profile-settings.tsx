@@ -40,6 +40,7 @@ import ImagePicker from "../ui/image-picker"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 import { Balance } from "../ui/balance"
+import { useTranslation } from "react-i18next"
 
 import { LimitDisplay } from "../ui/limit-display"
 import {
@@ -73,6 +74,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
   } = useContext(ChatbotUIContext)
 
   const router = useRouter()
+  const { t } = useTranslation()
 
   const { handleNewChat } = useChatHandler()
 
@@ -378,7 +380,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
         <div className="grow overflow-auto">
           <SheetHeader>
             <SheetTitle className="flex items-center justify-between space-x-2">
-              <div>User Settings</div>
+              <div>{t("User Settings")}</div>
 
               <Button
                 tabIndex={-1}
@@ -387,21 +389,21 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
                 onClick={handleSignOut}
               >
                 <IconLogout className="mr-1" size={20} />
-                Logout
+                {t("Logout")}
               </Button>
             </SheetTitle>
           </SheetHeader>
 
           <Tabs defaultValue="keys">
             <TabsList className="mt-4 grid w-full grid-cols-2">
-              <TabsTrigger value="profile">Profile</TabsTrigger>
-              <TabsTrigger value="keys">API Keys</TabsTrigger>
+              <TabsTrigger value="profile">{t("Profile")}</TabsTrigger>
+              <TabsTrigger value="keys">{t("API Keys")}</TabsTrigger>
             </TabsList>
 
             <TabsContent className="mt-4 space-y-4" value="profile">
               <div className="space-y-1">
                 <div className="flex items-center space-x-2">
-                  <Label>Username</Label>
+                  <Label>{t("Username")}</Label>
 
                   <div className="text-xs">
                     {username !== profile.username ? (
@@ -447,7 +449,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
               </div>
 
               <div className="space-y-1">
-                <Label>Profile Image</Label>
+                <Label>{t("Profile Image")}</Label>
 
                 <ImagePicker
                   src={profileImageSrc}
@@ -460,7 +462,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
               </div>
 
               <div className="space-y-1">
-                <Label>Chat Display Name</Label>
+                <Label>{t("Chat Display Name")}</Label>
 
                 <Input
                   placeholder="Chat display name..."
@@ -472,14 +474,15 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
 
               <div className="space-y-1">
                 <Label className="text-sm">
-                  What would you like the AI to know about you to provide better
-                  responses?
+                  {t(
+                    "What would you like the AI to know about you to provide better responses?"
+                  )}
                 </Label>
 
                 <TextareaAutosize
                   value={profileInstructions}
                   onValueChange={setProfileInstructions}
-                  placeholder="Profile context... (optional)"
+                  placeholder={t("Profile context... (optional)")}
                   minRows={6}
                   maxRows={10}
                 />
@@ -518,11 +521,6 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
                       value={openrouterAPIKey}
                       onChange={e => setOpenrouterAPIKey(e.target.value)}
                     />
-                    {/* <div className="mt-2 flex justify-between text-sm">
-                      <p>Limit: ${keyUsage.limit}</p>
-                      <p>Usage: ${keyUsage.usage}</p>
-                      <p>Remain: ${keyUsage.limit_remaining}</p>
-                    </div> */}
                   </>
                 )}
               </div>
@@ -834,11 +832,11 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
 
           <div className="ml-auto space-x-2">
             <Button variant="ghost" onClick={() => setIsOpen(false)}>
-              Cancel
+              {t("Cancel")}
             </Button>
 
             <Button ref={buttonRef} onClick={handleSave}>
-              Save
+              {t("Save")}
             </Button>
           </div>
         </div>

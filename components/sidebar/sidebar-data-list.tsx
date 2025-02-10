@@ -21,6 +21,7 @@ import { ModelItem } from "./items/models/model-item"
 import { PresetItem } from "./items/presets/preset-item"
 import { PromptItem } from "./items/prompts/prompt-item"
 import { ToolItem } from "./items/tools/tool-item"
+import { useTranslation } from "react-i18next"
 
 interface SidebarDataListProps {
   contentType: ContentType
@@ -92,6 +93,7 @@ export const SidebarDataList: FC<SidebarDataListProps> = ({
         return null
     }
   }
+  const { t } = useTranslation()
 
   const getSortedData = (
     data: any,

@@ -18,19 +18,25 @@ interface BalanceProps {
   usage: number
   limit_remaining: number
 }
+import { useTranslation } from "react-i18next"
 
 const Balance: React.FC<BalanceProps> = ({ limit, usage, limit_remaining }) => {
+  const { t } = useTranslation()
+
   // 使用LabelPrimitive.Root来创建标签，这里直接应用了样式变体
   return (
     <div className={containerStyle()}>
       <LabelPrimitive.Root className={balanceLabelVariants()}>
-        {` Limit: $${limit} `}
+        {t("Limit")}
+        {`: $${limit} `}
       </LabelPrimitive.Root>
       <LabelPrimitive.Root className={balanceLabelVariants()}>
-        {` Usage: $${usage} `}
+        {t("Usage")}
+        {`: $${usage} `}
       </LabelPrimitive.Root>
       <LabelPrimitive.Root className={balanceLabelVariants()}>
-        {` Remain: $${limit_remaining} `}
+        {t("Remain")}
+        {`: $${limit_remaining} `}
       </LabelPrimitive.Root>
     </div>
   )
