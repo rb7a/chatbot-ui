@@ -13,17 +13,17 @@ const balanceLabelVariants = cva(
 const containerStyle = cva("flex justify-between")
 
 // 定义Balance组件接收的props类型
-interface BalanceProps {
-  limit: number
-  usage: number
-  limit_remaining: number
+interface BalanceDeepseekProps {
+  total: number
+  granted: number
+  topped_up: number
 }
 import { useTranslation } from "react-i18next"
 
-const BalanceCNY: React.FC<BalanceProps> = ({
-  limit,
-  usage,
-  limit_remaining
+const BalanceCNY: React.FC<BalanceDeepseekProps> = ({
+  total,
+  granted,
+  topped_up
 }) => {
   const { t } = useTranslation()
 
@@ -31,16 +31,16 @@ const BalanceCNY: React.FC<BalanceProps> = ({
   return (
     <div className={containerStyle()}>
       <LabelPrimitive.Root className={balanceLabelVariants()}>
-        {t("Limit")}
-        {`: ￥ ${limit} `}
+        {t("Total")}
+        {`: ￥ ${total} `}
       </LabelPrimitive.Root>
       <LabelPrimitive.Root className={balanceLabelVariants()}>
-        {t("Usage")}
-        {`: ￥ ${usage} `}
+        {t("Granted")}
+        {`: ￥ ${granted} `}
       </LabelPrimitive.Root>
       <LabelPrimitive.Root className={balanceLabelVariants()}>
-        {t("Remain")}
-        {`: ￥ ${limit_remaining} `}
+        {t("Topped_up")}
+        {`: ￥ ${topped_up} `}
       </LabelPrimitive.Root>
     </div>
   )

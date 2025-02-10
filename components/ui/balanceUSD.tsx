@@ -13,14 +13,14 @@ const balanceLabelVariants = cva(
 const containerStyle = cva("flex justify-between")
 
 // 定义Balance组件接收的props类型
-interface BalanceProps {
+interface BalanceOpenrouterProps {
   limit: number
   usage: number
   limit_remaining: number
 }
 import { useTranslation } from "react-i18next"
 
-const BalanceUSD: React.FC<BalanceProps> = ({
+const BalanceUSD: React.FC<BalanceOpenrouterProps> = ({
   limit,
   usage,
   limit_remaining

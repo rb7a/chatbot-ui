@@ -618,9 +618,9 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
                       }}
                     >
                       <BalanceCNY
-                        limit={deepseekkeyUsage.total}
-                        usage={deepseekkeyUsage.granted}
-                        limit_remaining={deepseekkeyUsage.topped_up}
+                        total={deepseekkeyUsage.total}
+                        granted={deepseekkeyUsage.granted}
+                        topped_up={deepseekkeyUsage.topped_up}
                       />
                     </div>
                     <Input
