@@ -2,7 +2,7 @@
   "New": "新建",
   "Show Workspaces": "显示工作区",
   "Show Help": "显示帮助",
-  "Ask anything. Type @  /  #  !": "「/」- 提示，「@」- 助手，「#」- 文件，「!」 - 工具",
+  "Ask anything. Type @  /  #  !": "此处输入文本， / - 提示，@ - 助手，# - 文件，! - 工具 ",
   "Settings": "设置",
   "The LLM's response may contain errors. Please verify all important information." : "LLM 回答可能出现错误，请核对所有重要信息。",
   "Focus Chat": "聚焦聊天",
