@@ -95,13 +95,10 @@ export default async function Login({
 
     const email = formData.get("email") as string
     const password = formData.get("password") as string
-    const invite_user = formData.get("invite_user") as string
 
-    // 邮箱白名单验证
     const emailDomainWhitelistPatternsString = await getEnvVarOrEdgeConfigValue(
       "EMAIL_DOMAIN_WHITELIST"
     )
-
     const emailDomainWhitelist = emailDomainWhitelistPatternsString?.trim()
       ? emailDomainWhitelistPatternsString?.split(",")
       : []
@@ -111,6 +108,7 @@ export default async function Login({
       ? emailWhitelistPatternsString?.split(",")
       : []
 
+    // If there are whitelist patterns, check if the email is allowed to sign up
     if (emailDomainWhitelist.length > 0 || emailWhitelist.length > 0) {
       const domainMatch = emailDomainWhitelist?.includes(email.split("@")[1])
       const emailMatch = emailWhitelist?.includes(email)
@@ -121,21 +119,9 @@ export default async function Login({
       }
     }
 
-    // 验证邀请码
-    const validInviteCodeList =
-      await getEnvVarOrEdgeConfigValue("SYSTEM_INVITE_CODE")
-    const validInviteCodes = validInviteCodeList?.trim()
-      ? validInviteCodeList?.split(",")
-      : []
-    // 对邀请码进行处理,去除空格并转为小写
-    const processedInviteCode = invite_user?.trim().toLowerCase()
-    if (!validInviteCodes.includes(processedInviteCode)) {
-      return redirect(`/login?message=Invalid invite code`)
-    }
     const cookieStore = cookies()
     const supabase = createClient(cookieStore)
 
-    // 如果邀请码有效,则继续注册
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -150,10 +136,10 @@ export default async function Login({
       return redirect(`/login?message=${error.message}`)
     }
 
-    return redirect("/setup")
+    // return redirect("/setup")
 
     // USE IF YOU WANT TO SEND EMAIL VERIFICATION, ALSO CHANGE TOML FILE
-    // return redirect("/login?message=Check email to continue sign in process")
+    return redirect("/login?message=Check email to continue sign in process")
   }
 
   const handleResetPassword = async (formData: FormData) => {
@@ -207,24 +193,12 @@ export default async function Login({
           Login
         </SubmitButton>
 
-        {/* 合并后的Invitation User和注册按钮 */}
-        <div className="flex items-center gap-2">
-          <Label className="text-md flex-1" htmlFor="invite_user">
-            Invite
-          </Label>
-          <Input
-            className="rounded-md border bg-inherit px-4 py-2"
-            name="invite_user"
-            placeholder="invite code"
-          />
-          <SubmitButton
-            formAction={signUp}
-            className="border-foreground/20 rounded-md border px-4 py-2"
-          >
-            Sign Up
-          </SubmitButton>
-        </div>
-
+        <SubmitButton
+          formAction={signUp}
+          className="border-foreground/20 mb-2 rounded-md border px-4 py-2"
+        >
+          Sign Up
+        </SubmitButton>
         <div className="text-muted-foreground mt-1 flex justify-center text-sm">
           <span className="mr-1">Forgot your password?</span>
           <button
@@ -233,16 +207,6 @@ export default async function Login({
           >
             Reset
           </button>
-        </div>
-
-        <div className="text-muted-foreground mt-1 flex justify-center text-sm">
-          <span className="mr-1">To get invite code, please contact</span>
-          <a
-            href="mailto:support@apiskey.com"
-            className="text-primary underline hover:opacity-80"
-          >
-            Support
-          </a>
         </div>
 
         {searchParams?.message && (
