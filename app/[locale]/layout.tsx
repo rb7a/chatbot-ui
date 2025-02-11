@@ -11,7 +11,7 @@ import { cookies } from "next/headers"
 import { ReactNode } from "react"
 import "./globals.css"
 import "katex/dist/katex.min.css"
-
+import { Analytics } from "@vercel/analytics/react"
 const inter = Inter({ subsets: ["latin"] })
 const APP_NAME = "Apiskey"
 const APP_DEFAULT_TITLE = "Apiskey"
@@ -90,6 +90,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
+        <Analytics />
         <Providers attribute="class" defaultTheme="dark">
           <TranslationsProvider
             namespaces={i18nNamespaces}
