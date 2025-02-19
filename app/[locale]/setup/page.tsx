@@ -61,7 +61,7 @@ export default function SetupPage() {
   const [groqAPIKey, setGroqAPIKey] = useState("")
   const [perplexityAPIKey, setPerplexityAPIKey] = useState("")
   const [openrouterAPIKey, setOpenrouterAPIKey] = useState("")
-  const [deepseekAPIKey, setDeepseekAPIKey] = useState("")
+  const [deepseekAPIKey, setDeepSeekAPIKey] = useState("")
 
   useEffect(() => {
     ;(async () => {
@@ -232,6 +232,8 @@ export default function SetupPage() {
               onUseAzureOpenaiChange={setUseAzureOpenai}
               openrouterAPIKey={openrouterAPIKey}
               onOpenrouterAPIKeyChange={setOpenrouterAPIKey}
+              deepseekAPIKey={deepseekAPIKey}
+              onDeepSeekAPIKeyChange={setDeepSeekAPIKey}
             />
           </StepContainer>
         )

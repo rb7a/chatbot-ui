@@ -6,7 +6,7 @@ import { getCollectionFilesByCollectionId } from "@/db/collection-files"
 import useHotkey from "@/lib/hooks/use-hotkey"
 import { LLM_LIST } from "@/lib/models/llm/llm-list"
 import { Tables } from "@/supabase/types"
-import { LLMID } from "@/types"
+// import { LLMID } from "@/types"
 import { IconChevronDown, IconRobotFace } from "@tabler/icons-react"
 import Image from "next/image"
 import { FC, useContext, useEffect, useRef, useState } from "react"
@@ -21,6 +21,7 @@ import {
 import { Input } from "../ui/input"
 import { QuickSettingOption } from "./quick-setting-option"
 import { set } from "date-fns"
+import { LLM, LLMID, MessageImage, ModelProvider } from "@/types"
 
 interface QuickSettingsProps {}
 
@@ -42,7 +43,11 @@ export const QuickSettings: FC<QuickSettingsProps> = ({}) => {
     setChatFiles,
     setSelectedTools,
     setShowFilesDisplay,
-    selectedWorkspace
+    selectedWorkspace,
+    availableLocalModels,
+    availableDeepSeekModels,
+    availableOpenRouterModels,
+    models
   } = useContext(ChatbotUIContext)
 
   const inputRef = useRef<HTMLInputElement>(null)
@@ -178,10 +183,26 @@ export const QuickSettings: FC<QuickSettingsProps> = ({}) => {
         image => image.path === selectedAssistant?.image_path
       )?.base64 || ""
 
-  const modelDetails = LLM_LIST.find(
-    model => model.modelId === selectedPreset?.model
-  )
-
+  // const modelDetails = LLM_LIST.find(
+  //   model => model.modelId === selectedPreset?.model
+  // )
+  let modelDetails = null
+  if (selectedPreset) {
+    modelDetails = [
+      ...models.map(model => ({
+        modelId: model.model_id as LLMID,
+        modelName: model.name,
+        provider: "custom" as ModelProvider,
+        hostedId: model.id,
+        platformLink: "",
+        imageInput: false
+      })),
+      ...LLM_LIST,
+      ...availableLocalModels,
+      ...availableDeepSeekModels,
+      ...availableOpenRouterModels
+    ].find(model => model.modelId === selectedPreset.model)
+  }
   return (
     <DropdownMenu
       open={isOpen}
