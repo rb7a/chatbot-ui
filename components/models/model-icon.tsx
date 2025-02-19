@@ -7,10 +7,15 @@ import { IconSparkles } from "@tabler/icons-react"
 import { useTheme } from "next-themes"
 import Image from "next/image"
 import { FC, HTMLAttributes } from "react"
-import { AnthropicSVG } from "../icons/anthropic-svg"
-import { GoogleSVG } from "../icons/google-svg"
-import { OpenAISVG } from "../icons/openai-svg"
-
+import {
+  Anthropic,
+  Gemini,
+  OpenAI,
+  DeepSeek,
+  Ollama,
+  Mistral,
+  OpenRouter
+} from "@lobehub/icons"
 interface ModelIconProps extends HTMLAttributes<HTMLDivElement> {
   provider: ModelProvider
   height: number
@@ -28,7 +33,7 @@ export const ModelIcon: FC<ModelIconProps> = ({
   switch (provider as ModelProvider) {
     case "openai":
       return (
-        <OpenAISVG
+        <OpenAI
           className={cn(
             "rounded-sm bg-white p-1 text-black",
             props.className,
@@ -38,15 +43,50 @@ export const ModelIcon: FC<ModelIconProps> = ({
           height={height}
         />
       )
+    case "openrouter":
+      return (
+        <OpenRouter
+          className={cn(
+            "rounded-sm bg-transparent ",
+            props.className,
+            theme === "dark" ? "text-white" : "text-black"
+          )}
+          width={width}
+          height={height}
+        />
+      )
+    case "deepseek":
+      return (
+        <DeepSeek.Color
+          className={cn(
+            "rounded-sm bg-transparent ",
+            props.className,
+            theme === "dark" ? "text-white" : "text-black"
+          )}
+          width={width}
+          height={height}
+        />
+      )
+    case "ollama":
+      return (
+        <Ollama
+          className={cn(
+            "rounded-sm bg-transparent ",
+            props.className,
+            theme === "dark" ? "text-white" : "text-black"
+          )}
+          width={width}
+          height={height}
+        />
+      )
     case "mistral":
       return (
-        <Image
+        <Mistral
           className={cn(
-            "rounded-sm p-1",
+            "rounded-sm bg-white p-1 text-black",
+            props.className,
             theme === "dark" ? "bg-white" : "border-DEFAULT border-black"
           )}
-          src={mistral.src}
-          alt="Mistral"
           width={width}
           height={height}
         />
@@ -66,7 +106,7 @@ export const ModelIcon: FC<ModelIconProps> = ({
       )
     case "anthropic":
       return (
-        <AnthropicSVG
+        <Anthropic
           className={cn(
             "rounded-sm bg-white p-1 text-black",
             props.className,
@@ -78,7 +118,7 @@ export const ModelIcon: FC<ModelIconProps> = ({
       )
     case "google":
       return (
-        <GoogleSVG
+        <Gemini
           className={cn(
             "rounded-sm bg-white p-1 text-black",
             props.className,

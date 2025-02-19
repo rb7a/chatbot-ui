@@ -917,9 +917,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
 
             <WithTooltip
               display={
-                <div>
-                  Download Chatbot UI 1.0 data as JSON. Import coming soon!
-                </div>
+                <div>{t("Export data as JSON. Import coming soon!")}</div>
               }
               trigger={
                 <IconFileDownload
@@ -932,7 +930,9 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
 
             <WithTooltip
               display={
-                <div>Delete all chats. This action cannot be undone!</div>
+                <div>
+                  {t("Delete all chats. This action cannot be undone!")}
+                </div>
               }
               trigger={<DeleteAllChats profile={profile} />}
             />

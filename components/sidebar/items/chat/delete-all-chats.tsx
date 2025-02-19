@@ -15,12 +15,15 @@ import { Tables } from "@/supabase/types"
 import { IconTrash } from "@tabler/icons-react"
 import { FC, useContext, useRef, useState } from "react"
 import { toast } from "sonner"
+import { useTranslation } from "react-i18next"
 
 interface DeleteAllChatsProps {
   profile: Tables<"profiles">
 }
 
 export const DeleteAllChats: FC<DeleteAllChatsProps> = ({ profile }) => {
+  const { t } = useTranslation()
+
   const { setChats, setChatMessages, setSelectedChat } =
     useContext(ChatbotUIContext)
   const { handleNewChat } = useChatHandler()
@@ -38,7 +41,7 @@ export const DeleteAllChats: FC<DeleteAllChatsProps> = ({ profile }) => {
     setSelectedChat(null)
 
     handleNewChat()
-    toast.success("All chats deleted!")
+    toast.success(t("All chats deleted!"))
   }
 
   return (
@@ -49,22 +52,22 @@ export const DeleteAllChats: FC<DeleteAllChatsProps> = ({ profile }) => {
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete All Chats</DialogTitle>
+          <DialogTitle>{t("Delete All Chats")}</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete all chats?
+            {t("Are you sure you want to delete all chats?")}
           </DialogDescription>
         </DialogHeader>
 
         <DialogFooter>
           <Button variant="ghost" onClick={() => setShowChatDialog(false)}>
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             ref={buttonRef}
             variant="destructive"
             onClick={handleDeleteAllChats}
           >
-            Delete
+            {t("Delete")}
           </Button>
         </DialogFooter>
       </DialogContent>

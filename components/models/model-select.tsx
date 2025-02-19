@@ -12,7 +12,7 @@ import { Input } from "../ui/input"
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
 import { ModelIcon } from "./model-icon"
 import { ModelOption } from "./model-option"
-
+import { useTranslation } from "react-i18next"
 interface ModelSelectProps {
   selectedModelId: string
   onSelectModel: (modelId: LLMID) => void
@@ -22,6 +22,7 @@ export const ModelSelect: FC<ModelSelectProps> = ({
   selectedModelId,
   onSelectModel
 }) => {
+  const { t } = useTranslation()
   const {
     profile,
     models,
@@ -137,9 +138,9 @@ export const ModelSelect: FC<ModelSelectProps> = ({
         <Tabs value={tab} onValueChange={(value: any) => setTab(value)}>
           {availableLocalModels.length > 0 && (
             <TabsList defaultValue="hosted" className="grid grid-cols-2">
-              <TabsTrigger value="hosted">Hosted</TabsTrigger>
+              <TabsTrigger value="hosted">{t("Hosted")}</TabsTrigger>
 
-              <TabsTrigger value="local">Local</TabsTrigger>
+              <TabsTrigger value="local">{t("Local")}</TabsTrigger>
             </TabsList>
           )}
         </Tabs>
@@ -182,15 +183,14 @@ export const ModelSelect: FC<ModelSelectProps> = ({
                         key={model.modelId}
                         className="flex items-center space-x-1"
                       >
-                        {selectedModelId === model.modelId && (
-                          <IconCheck className="ml-2" size={32} />
-                        )}
-
                         <ModelOption
                           key={model.modelId}
                           model={model}
                           onSelect={() => handleSelectModel(model.modelId)}
                         />
+                        {selectedModelId === model.modelId && (
+                          <IconCheck className="ml-2" size={32} />
+                        )}
                       </div>
                     )
                   })}
