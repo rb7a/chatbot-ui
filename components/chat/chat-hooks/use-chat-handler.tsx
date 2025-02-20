@@ -176,7 +176,7 @@ export const useChatHandler = () => {
       // })
     }
 
-    return router.push(`/${selectedWorkspace.id}/chat`)
+    return router.push(`/${selectedWorkspace.id}/c`)
   }
 
   const handleFocusChatInput = () => {

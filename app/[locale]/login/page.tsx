@@ -48,7 +48,7 @@ export default async function Login({
       throw new Error(error.message)
     }
 
-    return redirect(`/${homeWorkspace.id}/chat`)
+    return redirect(`/${homeWorkspace.id}/c`)
   }
 
   const signIn = async (formData: FormData) => {
@@ -81,7 +81,7 @@ export default async function Login({
       )
     }
 
-    return redirect(`/${homeWorkspace.id}/chat`)
+    return redirect(`/${homeWorkspace.id}/c`)
   }
 
   const getEnvVarOrEdgeConfigValue = async (name: string) => {

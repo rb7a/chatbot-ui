@@ -67,5 +67,10 @@
   "Email":"电子邮件",
   "Password":"密码",
   "Forgot your password?": "忘记密码？",
-  "Reset": "重置"
+  "Reset": "重置",
+  "Chat Info": "聊天信息",
+  "Workspace Instructions": "工作区说明",
+  "Profile Context": "个人资料上下文",
+  ":": "：",
+  "Start a new chat": "开始新聊天"
 }

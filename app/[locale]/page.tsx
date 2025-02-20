@@ -23,7 +23,7 @@ export default function HomePage() {
         href="/login"
       >
         {t("Start")}
-        <IconArrowRight className="ml-1" size={20} />
+        {/* <IconArrowRight className="ml-1" size={20} /> */}
       </Link>
     </div>
   )
