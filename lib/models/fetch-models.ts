@@ -2,7 +2,9 @@ import { Tables } from "@/supabase/types"
 import { LLM, LLMID, OpenRouterLLM, DeepSeekLLM } from "@/types"
 import { toast } from "sonner"
 import { LLM_LIST_MAP } from "./llm/llm-list"
+import { get } from "@vercel/edge-config"
 
+// import {getEnvVarOrEdgeConfigValue} from "@/utils/getEnvVarOrEdgeConfigValue"
 export const fetchHostedModels = async (profile: Tables<"profiles">) => {
   try {
     const providers = ["google", "anthropic", "mistral", "groq", "perplexity"]
@@ -54,8 +56,18 @@ export const fetchHostedModels = async (profile: Tables<"profiles">) => {
 
 export const fetchOllamaModels = async () => {
   try {
+    const getEnvVarOrEdgeConfigValue = async (name: string) => {
+      if (process.env.EDGE_CONFIG) {
+        return await get<string>(name)
+      }
+      return process.env[name] || ""
+    }
+    const OLLAMA_AUTH_TOKEN = process.env.NEXT_PUBLIC_OLLAMA_APIKEY
+    var myHeaders = new Headers()
+    myHeaders.append("Authorization", `Bearer ${OLLAMA_AUTH_TOKEN}`)
     const response = await fetch(
-      process.env.NEXT_PUBLIC_OLLAMA_URL + "/api/tags"
+      process.env.NEXT_PUBLIC_OLLAMA_URL + "/api/tags",
+      { headers: myHeaders }
     )
 
     if (!response.ok) {

@@ -19,10 +19,10 @@ import {
   LLM,
   MessageImage
 } from "@/types"
+import { headers } from "next/headers"
 import React from "react"
 import { toast } from "sonner"
 import { v4 as uuidv4 } from "uuid"
-
 export const validateChatSettings = (
   chatSettings: ChatSettings | null,
   modelData: LLM | undefined,
@@ -159,7 +159,10 @@ export const handleLocalChat = async (
   const formattedMessages = await buildFinalMessages(payload, profile, [])
 
   // Ollama API: https://github.com/jmorganca/ollama/blob/main/docs/api.md
-  const response = await fetchChatResponse(
+  var myHeaders = new Headers()
+  const OLLAMA_AUTH_TOKEN = process.env.NEXT_PUBLIC_OLLAMA_APIKEY
+  myHeaders.append("Authorization", `Bearer ${OLLAMA_AUTH_TOKEN}`)
+  const response = await fetchChatTokenResponse(
     process.env.NEXT_PUBLIC_OLLAMA_URL + "/api/chat",
     {
       model: chatSettings.model,
@@ -168,6 +171,7 @@ export const handleLocalChat = async (
         temperature: payload.chatSettings.temperature
       }
     },
+    myHeaders,
     false,
     newAbortController,
     setIsGenerating,
@@ -248,7 +252,39 @@ export const handleHostedChat = async (
     setToolInUse
   )
 }
+export const fetchChatTokenResponse = async (
+  url: string,
+  body: object,
+  headers: Headers,
+  isHosted: boolean,
+  controller: AbortController,
+  setIsGenerating: React.Dispatch<React.SetStateAction<boolean>>,
+  setChatMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>
+) => {
+  const response = await fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: JSON.stringify(body),
+    signal: controller.signal
+  })
 
+  if (!response.ok) {
+    if (response.status === 404 && !isHosted) {
+      toast.error(
+        "Model not found. Make sure you have it downloaded via Ollama."
+      )
+    }
+
+    const errorData = await response.json()
+
+    toast.error(errorData.message)
+
+    setIsGenerating(false)
+    setChatMessages(prevMessages => prevMessages.slice(0, -2))
+  }
+
+  return response
+}
 export const fetchChatResponse = async (
   url: string,
   body: object,
