@@ -26,6 +26,7 @@ interface RootLayoutProps {
 }
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://apiskey.com"),
   applicationName: APP_NAME,
   title: {
     default: APP_DEFAULT_TITLE,

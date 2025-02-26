@@ -160,6 +160,7 @@ export const ModelSelect: FC<ModelSelectProps> = ({
                 if (tab === "hosted") return model.provider !== "ollama"
                 if (tab === "local") return model.provider === "ollama"
                 if (tab === "openrouter") return model.provider === "openrouter"
+                if (tab === "deepseek") return model.provider === "deepseek"
               })
               .filter(model =>
                 model.modelName.toLowerCase().includes(search.toLowerCase())

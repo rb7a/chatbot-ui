@@ -229,7 +229,8 @@ export const SidebarDataList: FC<SidebarDataListProps> = ({
         {data.length === 0 && (
           <div className="flex grow flex-col items-center justify-center">
             <div className=" text-centertext-muted-foreground p-8 text-lg italic">
-              No {contentType}.
+              {t("No")}
+              {t(contentType)}.
             </div>
           </div>
         )}
