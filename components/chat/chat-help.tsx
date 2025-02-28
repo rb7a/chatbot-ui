@@ -3,7 +3,8 @@ import {
   IconBrandGithub,
   IconBrandX,
   IconHelpCircle,
-  IconQuestionMark
+  IconQuestionMark,
+  IconUsers
 } from "@tabler/icons-react"
 import Link from "next/link"
 import { FC, useState } from "react"
@@ -50,6 +51,14 @@ export const ChatHelp: FC<ChatHelpProps> = ({}) => {
               rel="noopener noreferrer"
             >
               <IconBrandGithub />
+            </Link>
+            <Link
+              className="cursor-pointer hover:opacity-50"
+              href="https://hikafeng.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <IconUsers />
             </Link>
           </div>
 
