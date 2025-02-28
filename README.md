@@ -2,31 +2,15 @@
 
 The open-source AI chat app for everyone.
 
-<img src="./public/readme/screenshot.png" alt="Chatbot UI" width="600">
-
-## Demo
-
-View the latest demo [here](https://x.com/mckaywrigley/status/1738273242283151777?s=20).
+![Chatbot UI](./public/readme/image.png)
 
 ## Updates
-
-Hey everyone! I've heard your feedback and am working hard on a big update.
-
-Things like simpler deployment, better backend compatibility, and improved mobile layouts are on their way.
-
-Be back soon.
-
--- Mckay
 
 ## Official Hosted Version
 
 Use Chatbot UI without having to host it yourself!
 
-Find the official hosted version of Chatbot UI [here](https://chatbotui.com).
-
-## Sponsor
-
-If you find Chatbot UI useful, please consider [sponsoring](https://github.com/sponsors/mckaywrigley) me to support my open-source work :)
+Find the official hosted version of Chatbot UI [here](https://chat.hikafeng.com).
 
 ## Issues
 
@@ -68,16 +52,10 @@ npm run db-push
 
 to apply the latest migrations to your live database.
 
-## Local Quickstart
-
-Follow these steps to get your own Chatbot UI instance running locally.
-
-You can watch the full video tutorial [here](https://www.youtube.com/watch?v=9Qq3-7-HNgw).
-
 ### 1. Clone the Repo
 
 ```bash
-git clone https://github.com/mckaywrigley/chatbot-ui.git
+git clone https://github.com/hikafeng/chatbot-ui.git
 ```
 
 ### 2. Install Dependencies
@@ -204,7 +182,7 @@ Here you will get the values for the following environment variables:
 
 - `Project Ref`: Found in "General settings" as "Reference ID"
 
-- `Project ID`: Found in the URL of your project dashboard (Ex: https://supabase.com/dashboard/project/<YOUR_PROJECT_ID>/settings/general)
+- `Project ID`: Found in the URL of your project dashboard (Ex: <https://supabase.com/dashboard/project/><YOUR_PROJECT_ID>/settings/general)
 
 While still in "Settings" click on the "API" text tab on the left.
 
@@ -289,7 +267,4 @@ We are working on a guide for contributing.
 
 ## Contact
 
-Message Mckay on [Twitter/X](https://twitter.com/mckaywrigley)
-
-npm install express http-proxy-middleware
-node server.js
+Hikafeng on [My Site](https://hikafeng.com)
