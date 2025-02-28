@@ -13,10 +13,10 @@ import "./globals.css"
 import "katex/dist/katex.min.css"
 import { Analytics } from "@vercel/analytics/react"
 const inter = Inter({ subsets: ["latin"] })
-const APP_NAME = "Apiskey"
-const APP_DEFAULT_TITLE = "Apiskey"
-const APP_TITLE_TEMPLATE = "%s - Apiskey"
-const APP_DESCRIPTION = "Apiskey PWA!"
+const APP_NAME = "Hikafeng"
+const APP_DEFAULT_TITLE = "Hikafeng"
+const APP_TITLE_TEMPLATE = "%s - Hikafeng"
+const APP_DESCRIPTION = "Hikafeng PWA!"
 
 interface RootLayoutProps {
   children: ReactNode
@@ -26,7 +26,7 @@ interface RootLayoutProps {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://apiskey.com"),
+  metadataBase: new URL("https://chat.hikafeng.com"),
   applicationName: APP_NAME,
   title: {
     default: APP_DEFAULT_TITLE,

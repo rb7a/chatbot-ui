@@ -12,7 +12,7 @@ export const Brand: FC<BrandProps> = ({ theme = "dark" }) => {
   return (
     <Link
       className="flex cursor-pointer flex-col items-center hover:opacity-50"
-      href="https://apiskey.com"
+      href="https://chat.hikafeng.com"
       target="_blank"
       rel="noopener noreferrer"
     >
@@ -20,7 +20,7 @@ export const Brand: FC<BrandProps> = ({ theme = "dark" }) => {
         <ChatbotUISVG theme={theme === "dark" ? "dark" : "light"} scale={0.3} />
       </div>
 
-      {/* <div className="text-4xl font-bold tracking-wide">Apiskey</div> */}
+      {/* <div className="text-4xl font-bold tracking-wide">Hikafeng</div> */}
     </Link>
   )
 }

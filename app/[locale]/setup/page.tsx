@@ -174,7 +174,7 @@ export default function SetupPage() {
           <StepContainer
             stepDescription="Let's create your profile."
             stepNum={currentStep}
-            stepTitle="Welcome to Apiskey"
+            stepTitle="Welcome to Hikafeng"
             onShouldProceed={handleShouldProceed}
             showNextButton={!!(username && usernameAvailable)}
             showBackButton={false}

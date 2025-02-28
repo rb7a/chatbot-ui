@@ -23,8 +23,8 @@ export async function POST(request: Request) {
       apiKey: profile.openrouter_api_key || "",
       baseURL: "https://openrouter.ai/api/v1",
       defaultHeaders: {
-        "HTTP-Referer": "https://apiskey.com", // Optional, for including your app on openrouter.ai rankings.
-        "X-Title": "Apiskey - " + profile.display_name // Optional. Shows in rankings on openrouter.ai.
+        "HTTP-Referer": "https://chat.hikafeng.com", // Optional, for including your app on openrouter.ai rankings.
+        "X-Title": "Hikafeng - " + profile.display_name // Optional. Shows in rankings on openrouter.ai.
       }
     })
 
