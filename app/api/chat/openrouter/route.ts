@@ -7,11 +7,7 @@ import { ChatCompletionCreateParamsBase } from "openai/resources/chat/completion
 import { getEnvVarOrEdgeConfigValue } from "@/utils/getEnvVarOrEdgeConfigValue"
 
 export const runtime: ServerRuntime = "edge"
-const NEXT_PUBLIC_SITE_URL_STR =
-  (await getEnvVarOrEdgeConfigValue("NEXT_PUBLIC_SITE_URL")) ||
-  "https://chat.hikafeng.com"
-const NEXT_PUBLIC_SITE_NAME_STR =
-  (await getEnvVarOrEdgeConfigValue("NEXT_PUBLIC_SITE_NAME")) || "ChatbotUI"
+
 export async function POST(request: Request) {
   const json = await request.json()
   const { chatSettings, messages } = json as {
@@ -23,7 +19,11 @@ export async function POST(request: Request) {
     const profile = await getServerProfile()
 
     checkApiKey(profile.openrouter_api_key, "OpenRouter")
-
+    const NEXT_PUBLIC_SITE_URL_STR =
+      (await getEnvVarOrEdgeConfigValue("NEXT_PUBLIC_SITE_URL")) ||
+      "https://chat.hikafeng.com"
+    const NEXT_PUBLIC_SITE_NAME_STR =
+      (await getEnvVarOrEdgeConfigValue("NEXT_PUBLIC_SITE_NAME")) || "ChatbotUI"
     const openai = new OpenAI({
       apiKey: profile.openrouter_api_key || "",
       baseURL: "https://openrouter.ai/api/v1",
