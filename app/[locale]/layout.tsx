@@ -12,11 +12,18 @@ import { ReactNode } from "react"
 import "./globals.css"
 import "katex/dist/katex.min.css"
 import { Analytics } from "@vercel/analytics/react"
+import { getEnvVarOrEdgeConfigValue } from "@/utils/getEnvVarOrEdgeConfigValue"
 const inter = Inter({ subsets: ["latin"] })
-const APP_NAME = "Hikafeng"
-const APP_DEFAULT_TITLE = "Hikafeng"
-const APP_TITLE_TEMPLATE = "%s - Hikafeng"
-const APP_DESCRIPTION = "Hikafeng PWA!"
+const NEXT_PUBLIC_SITE_URL_STR =
+  (await getEnvVarOrEdgeConfigValue("NEXT_PUBLIC_SITE_URL")) ||
+  "https://chat.hikafeng.com"
+const NEXT_PUBLIC_SITE_NAME_STR =
+  (await getEnvVarOrEdgeConfigValue("NEXT_PUBLIC_SITE_NAME")) || "HikafengChat"
+
+const APP_NAME = NEXT_PUBLIC_SITE_NAME_STR
+const APP_DEFAULT_TITLE = NEXT_PUBLIC_SITE_NAME_STR
+const APP_TITLE_TEMPLATE = "%s - " + NEXT_PUBLIC_SITE_NAME_STR
+const APP_DESCRIPTION = NEXT_PUBLIC_SITE_NAME_STR + " PWA!"
 
 interface RootLayoutProps {
   children: ReactNode
@@ -24,9 +31,8 @@ interface RootLayoutProps {
     locale: string
   }
 }
-
 export const metadata: Metadata = {
-  metadataBase: new URL("https://chat.hikafeng.com"),
+  metadataBase: new URL(NEXT_PUBLIC_SITE_URL_STR),
   applicationName: APP_NAME,
   title: {
     default: APP_DEFAULT_TITLE,

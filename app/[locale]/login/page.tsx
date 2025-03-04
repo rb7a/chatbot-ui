@@ -12,6 +12,7 @@ import { Metadata } from "next"
 import { cookies, headers } from "next/headers"
 import { redirect } from "next/navigation"
 import ResetPassword from "@/components/ui/resetpassword"
+import { getEnvVarOrEdgeConfigValue } from "@/utils/getEnvVarOrEdgeConfigValue"
 
 export const metadata: Metadata = {
   title: "Login"
@@ -82,15 +83,6 @@ export default async function Login({
     }
 
     return redirect(`/${homeWorkspace.id}/c`)
-  }
-
-  const getEnvVarOrEdgeConfigValue = async (name: string) => {
-    "use server"
-    if (process.env.EDGE_CONFIG) {
-      return await get<string>(name)
-    }
-
-    return process.env[name]
   }
 
   const signUp = async (formData: FormData) => {

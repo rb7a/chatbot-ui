@@ -4,8 +4,12 @@ import { OpenAIStream, StreamingTextResponse } from "ai"
 import { ServerRuntime } from "next"
 import OpenAI from "openai"
 import { ChatCompletionCreateParamsBase } from "openai/resources/chat/completions.mjs"
+import { getEnvVarOrEdgeConfigValue } from "@/utils/getEnvVarOrEdgeConfigValue"
 
 export const runtime: ServerRuntime = "edge"
+const NEXT_PUBLIC_SITE_URL_STR =
+  (await getEnvVarOrEdgeConfigValue("NEXT_PUBLIC_SITE_URL")) ||
+  "https://chat.hikafeng.com"
 
 export async function POST(request: Request) {
   const json = await request.json()
@@ -23,7 +27,7 @@ export async function POST(request: Request) {
       apiKey: profile.openrouter_api_key || "",
       baseURL: "https://openrouter.ai/api/v1",
       defaultHeaders: {
-        "HTTP-Referer": "https://chat.hikafeng.com", // Optional, for including your app on openrouter.ai rankings.
+        "HTTP-Referer": NEXT_PUBLIC_SITE_URL_STR, // Optional, for including your app on openrouter.ai rankings.
         "X-Title": "Hikafeng - " + profile.display_name // Optional. Shows in rankings on openrouter.ai.
       }
     })
