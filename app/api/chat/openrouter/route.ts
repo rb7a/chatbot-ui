@@ -10,7 +10,8 @@ export const runtime: ServerRuntime = "edge"
 const NEXT_PUBLIC_SITE_URL_STR =
   (await getEnvVarOrEdgeConfigValue("NEXT_PUBLIC_SITE_URL")) ||
   "https://chat.hikafeng.com"
-
+const NEXT_PUBLIC_SITE_NAME_STR =
+  (await getEnvVarOrEdgeConfigValue("NEXT_PUBLIC_SITE_NAME")) || "HikafengChat"
 export async function POST(request: Request) {
   const json = await request.json()
   const { chatSettings, messages } = json as {
@@ -28,7 +29,7 @@ export async function POST(request: Request) {
       baseURL: "https://openrouter.ai/api/v1",
       defaultHeaders: {
         "HTTP-Referer": NEXT_PUBLIC_SITE_URL_STR, // Optional, for including your app on openrouter.ai rankings.
-        "X-Title": "Hikafeng - " + profile.display_name // Optional. Shows in rankings on openrouter.ai.
+        "X-Title": NEXT_PUBLIC_SITE_NAME_STR + " - " + profile.display_name // Optional. Shows in rankings on openrouter.ai.
       }
     })
 
