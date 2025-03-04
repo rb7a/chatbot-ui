@@ -18,7 +18,7 @@ const NEXT_PUBLIC_SITE_URL_STR =
   (await getEnvVarOrEdgeConfigValue("NEXT_PUBLIC_SITE_URL")) ||
   "https://chat.hikafeng.com"
 const NEXT_PUBLIC_SITE_NAME_STR =
-  (await getEnvVarOrEdgeConfigValue("NEXT_PUBLIC_SITE_NAME")) || "HikafengChat"
+  (await getEnvVarOrEdgeConfigValue("NEXT_PUBLIC_SITE_NAME")) || "ChatbotUI"
 
 const APP_NAME = NEXT_PUBLIC_SITE_NAME_STR
 const APP_DEFAULT_TITLE = NEXT_PUBLIC_SITE_NAME_STR

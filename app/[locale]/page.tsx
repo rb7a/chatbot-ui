@@ -12,7 +12,7 @@ import Link from "next/link"
 export default function HomePage() {
   const { theme } = useTheme()
   const { t } = useTranslation()
-  const [siteName, setSiteName] = useState("HikafengChat")
+  const [siteName, setSiteName] = useState("ChatbotUI")
 
   useEffect(() => {
     const fetchEnvVar = async () => {

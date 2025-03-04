@@ -6,7 +6,7 @@ interface FinishStepProps {
 }
 
 export const FinishStep: FC<FinishStepProps> = ({ displayName }) => {
-  const [siteName, setSiteName] = useState("HikafengChat")
+  const [siteName, setSiteName] = useState("ChatbotUI")
 
   useEffect(() => {
     const fetchEnvVar = async () => {

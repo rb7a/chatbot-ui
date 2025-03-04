@@ -11,7 +11,7 @@ const NEXT_PUBLIC_SITE_URL_STR =
   (await getEnvVarOrEdgeConfigValue("NEXT_PUBLIC_SITE_URL")) ||
   "https://chat.hikafeng.com"
 const NEXT_PUBLIC_SITE_NAME_STR =
-  (await getEnvVarOrEdgeConfigValue("NEXT_PUBLIC_SITE_NAME")) || "HikafengChat"
+  (await getEnvVarOrEdgeConfigValue("NEXT_PUBLIC_SITE_NAME")) || "ChatbotUI"
 export async function POST(request: Request) {
   const json = await request.json()
   const { chatSettings, messages } = json as {

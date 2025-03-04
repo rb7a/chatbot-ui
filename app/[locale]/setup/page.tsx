@@ -22,7 +22,7 @@ import {
   SETUP_STEP_COUNT,
   StepContainer
 } from "../../../components/setup/step-container"
-
+import { getEnvVarOrEdgeConfigValue } from "@/utils/getEnvVarOrEdgeConfigValue"
 export default function SetupPage() {
   const {
     profile,
@@ -165,7 +165,19 @@ export default function SetupPage() {
 
     return router.push(`/${homeWorkspace?.id}/c`)
   }
+  const [siteName, setSiteName] = useState("ChatbotUI")
 
+  useEffect(() => {
+    const fetchEnvVar = async () => {
+      const envValue = await getEnvVarOrEdgeConfigValue("NEXT_PUBLIC_SITE_NAME")
+      if (envValue) {
+        setSiteName(envValue)
+      }
+    }
+
+    fetchEnvVar()
+  }, [])
+  const stepTitleStr = "Welcome to " + siteName
   const renderStep = (stepNum: number) => {
     switch (stepNum) {
       // Profile Step
@@ -174,7 +186,7 @@ export default function SetupPage() {
           <StepContainer
             stepDescription="Let's create your profile."
             stepNum={currentStep}
-            stepTitle="Welcome to Hikafeng"
+            stepTitle={stepTitleStr}
             onShouldProceed={handleShouldProceed}
             showNextButton={!!(username && usernameAvailable)}
             showBackButton={false}
