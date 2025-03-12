@@ -35,7 +35,10 @@ export async function POST(request: Request) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${profile.deepseek_api_key}`
+        Authorization: `Bearer ${profile.deepseek_api_key}`,
+        Accept: "*/*",
+        Host: "api.deepseek.com",
+        Connection: "keep-alive"
       },
       body: JSON.stringify(requestBody)
     })
