@@ -49,6 +49,7 @@ export async function POST(request: Request) {
 
     const reader = response.body?.getReader()
     const encoder = new TextEncoder()
+    let lastSentTime = Date.now()
 
     return new Response(
       new ReadableStream({
@@ -92,9 +93,6 @@ export async function POST(request: Request) {
                       }
 
                       controller.enqueue(encoder.encode(chunk))
-
-                      // **每 1 秒发送一个数据包，防止 Vercel 误判超时**
-                      await new Promise(resolve => setTimeout(resolve, 1000))
                     }
                   } catch (error) {
                     console.error(
@@ -105,6 +103,12 @@ export async function POST(request: Request) {
                     )
                   }
                 }
+              }
+
+              // **每 5 秒发送一个空数据包，防止 Vercel 误判超时**
+              if (Date.now() - lastSentTime > 5000) {
+                controller.enqueue(encoder.encode(" ")) // 发送一个空格，保持连接
+                lastSentTime = Date.now()
               }
             }
           } catch (error) {
