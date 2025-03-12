@@ -179,7 +179,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
         }
 
         const data = await response.json()
-        console.log(data)
+        // console.log(data)
         if (data && data.data) {
           setopenrouterKeyUsage({
             limit: parseFloat(data.data.limit.toFixed(2)),
@@ -215,7 +215,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
         }
 
         const data = await response.json()
-        console.log(data)
+        // console.log(data)
 
         if (data && data.balance_infos && data.is_available) {
           setdeepseekKeyUsage({
