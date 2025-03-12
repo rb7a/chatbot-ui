@@ -27,7 +27,7 @@ export async function POST(request: Request) {
       model: chatSettings.model,
       messages: filteredMessages,
       temperature: chatSettings.temperature,
-      max_tokens: 8192,
+      max_tokens: 2048,
       stream: true
     }
 
