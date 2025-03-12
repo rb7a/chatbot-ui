@@ -63,7 +63,6 @@ export async function POST(request: Request) {
               const { done, value } = await reader.read()
               if (done) break
 
-              // 解析流式 JSON 响应
               const text = new TextDecoder().decode(value)
               const lines = text.split("\n").filter(line => line.trim() !== "")
 
@@ -71,7 +70,6 @@ export async function POST(request: Request) {
                 if (line.startsWith("data:")) {
                   const jsonData = line.slice(5).trim()
 
-                  // 忽略 "[DONE]" 消息并立即结束流
                   if (jsonData === "[DONE]") {
                     controller.close()
                     return
@@ -90,12 +88,13 @@ export async function POST(request: Request) {
                           }) + "\n"
                       } else {
                         chunk =
-                          JSON.stringify({
-                            content: delta.content
-                          }) + "\n"
+                          JSON.stringify({ content: delta.content }) + "\n"
                       }
 
                       controller.enqueue(encoder.encode(chunk))
+
+                      // **每 1 秒发送一个数据包，防止 Vercel 误判超时**
+                      await new Promise(resolve => setTimeout(resolve, 1000))
                     }
                   } catch (error) {
                     console.error(
@@ -111,14 +110,12 @@ export async function POST(request: Request) {
           } catch (error) {
             console.error("Stream processing error:", error)
           } finally {
-            controller.close() // 确保流在 `reader.read()` 结束后才关闭
+            controller.close()
           }
         }
       }),
       {
-        headers: {
-          "Content-Type": "application/json"
-        }
+        headers: { "Content-Type": "application/json" }
       }
     )
   } catch (error: any) {
