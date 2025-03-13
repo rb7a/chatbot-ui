@@ -2,7 +2,7 @@ import { checkApiKey, getServerProfile } from "@/lib/server/server-chat-helpers"
 import { ChatSettings } from "@/types"
 import { ServerRuntime } from "next"
 
-export const runtime: ServerRuntime = "edge"
+export const runtime: ServerRuntime = "nodejs"
 
 export async function POST(request: Request) {
   const json = await request.json()
