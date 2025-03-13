@@ -272,7 +272,6 @@ export const useChatHandler = () => {
       }
 
       let generatedText = ""
-      console.log("tempAssistantChatMessage", tempAssistantChatMessage)
       if (selectedTools.length > 0) {
         setToolInUse("Tools")
 
