@@ -17,30 +17,26 @@ export async function POST(request: Request) {
 
     const apiUrl = "https://api.deepseek.com/chat/completions"
 
-    // 过滤掉 assistant 消息
-    const filteredMessages = messages.filter(
-      message => message.role !== "assistant"
-    )
-    // console.log("filteredMessages", filteredMessages)
-
     const requestBody = {
       model: chatSettings.model,
-      messages: filteredMessages,
+      messages: messages,
       temperature: chatSettings.temperature,
-      max_tokens: 2048,
-      stream: true
+      max_tokens: chatSettings.contextLength,
+      stream: true,
+      response_format: { type: "text" }
     }
+
+    // console.log("requestBody", requestBody)
 
     const response = await fetch(apiUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${profile.deepseek_api_key}`,
-        Accept: "*/*",
-        Host: "api.deepseek.com",
-        Connection: "keep-alive"
+        Accept: "*/*"
       },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify(requestBody),
+      redirect: "follow"
     })
 
     if (!response.ok) {
@@ -50,6 +46,7 @@ export async function POST(request: Request) {
     const reader = response.body?.getReader()
     const encoder = new TextEncoder()
     let lastSentTime = Date.now()
+    let buffer = "" // 用于存储未完整的 JSON 片段
 
     return new Response(
       new ReadableStream({
@@ -65,11 +62,16 @@ export async function POST(request: Request) {
               if (done) break
 
               const text = new TextDecoder().decode(value)
-              const lines = text.split("\n").filter(line => line.trim() !== "")
+              buffer += text // 追加到 buffer
+
+              const lines = buffer
+                .split("\n")
+                .filter(line => line.trim() !== "")
+              buffer = "" // 清空 buffer，准备重新存储未解析的数据
 
               for (const line of lines) {
                 if (line.startsWith("data:")) {
-                  const jsonData = line.slice(5).trim()
+                  let jsonData = line.slice(5).trim()
 
                   if (jsonData === "[DONE]") {
                     controller.close()
@@ -77,7 +79,9 @@ export async function POST(request: Request) {
                   }
 
                   try {
+                    // **尝试解析 JSON**
                     const json = JSON.parse(jsonData)
+
                     if (json.choices && json.choices.length > 0) {
                       const delta = json.choices[0].delta
                       let chunk = ""
@@ -95,12 +99,12 @@ export async function POST(request: Request) {
                       controller.enqueue(encoder.encode(chunk))
                     }
                   } catch (error) {
-                    console.error(
-                      "Error parsing DeepSeek response:",
-                      error,
-                      "Received data:",
+                    // **解析失败，说明 JSON 可能是被拆分的，存入 buffer**
+                    console.warn(
+                      "JSON parse error, storing in buffer:",
                       jsonData
                     )
+                    buffer = jsonData // 存入 buffer，等待下次拼接
                   }
                 }
               }

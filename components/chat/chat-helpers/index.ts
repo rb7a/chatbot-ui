@@ -157,7 +157,7 @@ export const handleLocalChat = async (
   setToolInUse: React.Dispatch<React.SetStateAction<string>>
 ) => {
   const formattedMessages = await buildFinalMessages(payload, profile, [])
-
+  console.log("formattedMessages", formattedMessages)
   // Ollama API: https://github.com/jmorganca/ollama/blob/main/docs/api.md
   var myHeaders = new Headers()
   const OLLAMA_AUTH_TOKEN = process.env.NEXT_PUBLIC_OLLAMA_APIKEY

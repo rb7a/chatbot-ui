@@ -2,6 +2,7 @@ import { Tables } from "@/supabase/types"
 import { ChatPayload, MessageImage } from "@/types"
 import { encode } from "gpt-tokenizer"
 import { getBase64FromDataURL, getMediaTypeFromDataURL } from "@/lib/utils"
+import { processRmCotMessages } from "@/components/chat/chat-hooks/clean-cot-messages"
 
 const buildBasePrompt = (
   prompt: string,
@@ -10,7 +11,6 @@ const buildBasePrompt = (
   assistant: Tables<"assistants"> | null
 ) => {
   let fullPrompt = ""
-
   if (assistant) {
     fullPrompt += `<INJECT ROLE>\nYou are not an AI. You are ${assistant.name}.\n</INJECT ROLE>\n\n`
   }
@@ -172,7 +172,7 @@ export async function buildFinalMessages(
     }
   }
 
-  return finalMessages
+  return processRmCotMessages(finalMessages)
 }
 
 function buildRetrievalText(fileItems: Tables<"file_items">[]) {

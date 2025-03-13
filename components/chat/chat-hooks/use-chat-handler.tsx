@@ -260,7 +260,6 @@ export const useChatHandler = () => {
           setChatMessages,
           selectedAssistant
         )
-
       let payload: ChatPayload = {
         chatSettings: chatSettings!,
         workspaceInstructions: selectedWorkspace!.instructions || "",
@@ -273,7 +272,7 @@ export const useChatHandler = () => {
       }
 
       let generatedText = ""
-
+      console.log("tempAssistantChatMessage", tempAssistantChatMessage)
       if (selectedTools.length > 0) {
         setToolInUse("Tools")
 

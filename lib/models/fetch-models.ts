@@ -197,7 +197,7 @@ export const fetchDeepSeekModels = async (deepseek_api_key: any) => {
       hostedId: model.id,
       platformLink: "https://api.deepseek.com",
       imageInput: true,
-      maxContext: 8192
+      maxContext: 65536
     })
   )
 
