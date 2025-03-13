@@ -50,6 +50,7 @@
   "No workspace instructions.": "没有工作区说明。",
   "Instructions... (optional)" : "说明... (可选)",
   "Are you sure you want to delete": "您确定要删除",
+  "Are you sure you want to delete this chat?": "您确定要删除此聊天吗？",
   "Delete Folder Only": "仅删除文件夹",
   "Delete Folder & Included Items": "删除文件夹及包含的项目",
   "Delete all chats. This action cannot be undone!": "删除所有聊天。此操作无法撤消！",

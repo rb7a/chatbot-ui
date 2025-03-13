@@ -50,6 +50,7 @@
   "No workspace instructions.": "No workspace instructions.",
   "Instructions... (optional)": "Instructions... (optional)",
   "Are you sure you want to delete": "Are you sure you want to delete",
+  "Are you sure you want to delete this chat?": "Are you sure you want to delete this chat?",
   "Delete Folder Only": "Delete Folder Only",
   "Delete Folder & Included Items": "Delete Folder & Included Items",
   "Delete all chats. This action cannot be undone!": "Delete all chats. This action cannot be undone!",
