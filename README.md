@@ -2,7 +2,7 @@
 
 The open-source AI chat app for everyone.
 
-![Chatbot UI](./public/readme/image.png)
+![Chatbot UI](./web/web/public/readme/image.png)
 
 ## Updates
 
