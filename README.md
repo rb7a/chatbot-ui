@@ -2,7 +2,7 @@
 
 The open-source AI chat app for everyone.
 
-![Chatbot UI](./web/web/public/readme/image.png)
+![Chatbot UI](./public/readme/image.png)
 
 ## Updates
 
@@ -86,13 +86,13 @@ You will need to install Docker to run Supabase locally. You can download it [he
 
 #### 2. Install Supabase CLI
 
-**MacOS/Linux**
+##### MacOS/Linux
 
 ```bash
 brew install supabase/tap/supabase
 ```
 
-**Windows**
+##### Windows
 
 ```bash
 scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
