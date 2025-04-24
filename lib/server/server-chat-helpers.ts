@@ -2,12 +2,13 @@ import { Database, Tables } from "@/supabase/types"
 import { VALID_ENV_KEYS } from "@/types/valid-keys"
 import { createServerClient } from "@supabase/ssr"
 import { cookies } from "next/headers"
+import { SUPABASE_SERVER_URL, SUPABASE_ANON_KEY } from "@/config"
 
 export async function getServerProfile() {
   const cookieStore = cookies()
   const supabase = createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_SERVER_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    SUPABASE_SERVER_URL!,
+    SUPABASE_ANON_KEY!,
     {
       cookies: {
         get(name: string) {

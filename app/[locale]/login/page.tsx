@@ -13,6 +13,7 @@ import { cookies, headers } from "next/headers"
 import { redirect } from "next/navigation"
 import ResetPassword from "@/components/ui/resetpassword"
 import { getEnvVarOrEdgeConfigValue } from "@/utils/getEnvVarOrEdgeConfigValue"
+import { SUPABASE_SERVER_URL, SUPABASE_ANON_KEY } from "@/config"
 
 export const metadata: Metadata = {
   title: "Login"
@@ -25,8 +26,8 @@ export default async function Login({
 }) {
   const cookieStore = cookies()
   const supabase = createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_SERVER_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    SUPABASE_SERVER_URL!,
+    SUPABASE_ANON_KEY!,
     {
       cookies: {
         get(name: string) {

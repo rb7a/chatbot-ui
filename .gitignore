@@ -46,3 +46,8 @@ sw.js
 sw.js.map
 workbox-*.js
 workbox-*.js.map
+
+# docker volume
+./docker/volumes
+# local env files
+./docker/.env

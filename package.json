@@ -24,7 +24,9 @@
     "db-pull": "supabase db remote commit",
     "db-push": "supabase db push",
     "test": "jest",
-    "pm2:prod": "pm2 start ecosystem.config.js --env production"
+    "pmst": "pm2 start ecosystem.config.js ",
+    "pmllst": "pm2 start ecosystem.local.config.js "
+
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.18.0",

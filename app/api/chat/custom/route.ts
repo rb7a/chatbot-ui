@@ -5,7 +5,7 @@ import { OpenAIStream, StreamingTextResponse } from "ai"
 import { ServerRuntime } from "next"
 import OpenAI from "openai"
 import { ChatCompletionCreateParamsBase } from "openai/resources/chat/completions.mjs"
-
+import { SUPABASE_PUBLIC_URL, SUPABASE_ANON_KEY } from "@/config"
 export const runtime: ServerRuntime = "edge"
 
 export async function POST(request: Request) {
@@ -18,8 +18,8 @@ export async function POST(request: Request) {
 
   try {
     const supabaseAdmin = createClient<Database>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
+      SUPABASE_PUBLIC_URL!,
+      SUPABASE_ANON_KEY!
     )
 
     const { data: customModel, error } = await supabaseAdmin

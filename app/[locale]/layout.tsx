@@ -13,7 +13,7 @@ import "./globals.css"
 import "katex/dist/katex.min.css"
 import { Analytics } from "@vercel/analytics/react"
 import { getEnvVarOrEdgeConfigValue } from "@/utils/getEnvVarOrEdgeConfigValue"
-
+import { SUPABASE_SERVER_URL, SUPABASE_ANON_KEY } from "@/config"
 const inter = localFont({
   src: "./fonts/Inter-Regular.woff2",
   display: "swap"
@@ -85,9 +85,12 @@ export default async function RootLayout({
 }: RootLayoutProps) {
   const cookieStore = cookies()
 
+  console.log("SUPABASE_SERVER_URL", SUPABASE_SERVER_URL)
+  console.log("SUPABASE_ANON_KEY", SUPABASE_ANON_KEY)
+
   const supabase = createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_SERVER_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    SUPABASE_SERVER_URL!,
+    SUPABASE_ANON_KEY!,
     {
       cookies: {
         get(name: string) {
