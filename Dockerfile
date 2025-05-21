@@ -56,3 +56,5 @@ ENV COMMIT_SHA=${COMMIT_SHA}
 USER 1001
 EXPOSE 3000
 ENTRYPOINT ["/bin/sh", "./entrypoint.sh"]
+
+# docker build -t hikafeng/chatbot-ui:latest -t hikafeng/chatbot-ui:v0.1.0 --build-arg COMMIT_SHA=$(git rev-parse HEAD) .
