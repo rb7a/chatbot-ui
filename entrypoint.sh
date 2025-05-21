@@ -13,6 +13,6 @@
 set -e
 
 export NEXT_PUBLIC_SUPABASE_SERVER_URL=
-export NEXT_PUBLIC_SUPABASE_URL=
+export NEXT_PUBLIC_SUPABASE_PUBLIC_URL=
 
 pm2 start /app/web/server.js --name chatbot-ui --cwd /app/web -i ${PM2_INSTANCES} --no-daemon
