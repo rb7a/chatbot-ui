@@ -34,6 +34,8 @@ interface GlobalStateProps {
   children: React.ReactNode
 }
 
+import { OLLAMA_URL, OLLAMA_API_KEY } from "@/config"
+
 export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
   const router = useRouter()
 
@@ -209,7 +211,7 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
         }
       }
 
-      if (process.env.NEXT_PUBLIC_OLLAMA_URL) {
+      if (OLLAMA_URL) {
         const localModels = await fetchOllamaModels()
         if (!localModels) return
         setAvailableLocalModels(localModels)

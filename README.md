@@ -4,6 +4,10 @@ The open-source AI chat app for everyone.
 
 ![Chatbot UI](./public/readme/image.png)
 
+## Docker Comppose
+
+[Deploy Chatbot-UI Locally with Docker Compose](docker/README.md)
+
 ## Updates
 
 ## Official Hosted Version

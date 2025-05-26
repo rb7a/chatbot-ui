@@ -23,6 +23,8 @@ import { headers } from "next/headers"
 import React from "react"
 import { toast } from "sonner"
 import { v4 as uuidv4 } from "uuid"
+
+import { OLLAMA_URL, OLLAMA_API_KEY } from "@/config"
 export const validateChatSettings = (
   chatSettings: ChatSettings | null,
   modelData: LLM | undefined,
@@ -160,10 +162,10 @@ export const handleLocalChat = async (
   console.log("formattedMessages", formattedMessages)
   // Ollama API: https://github.com/jmorganca/ollama/blob/main/docs/api.md
   var myHeaders = new Headers()
-  const OLLAMA_AUTH_TOKEN = process.env.NEXT_PUBLIC_OLLAMA_APIKEY
+  const OLLAMA_AUTH_TOKEN = OLLAMA_API_KEY
   myHeaders.append("Authorization", `Bearer ${OLLAMA_AUTH_TOKEN}`)
   const response = await fetchChatTokenResponse(
-    process.env.NEXT_PUBLIC_OLLAMA_URL + "/api/chat",
+    OLLAMA_URL + "/api/chat",
     {
       model: chatSettings.model,
       messages: formattedMessages,

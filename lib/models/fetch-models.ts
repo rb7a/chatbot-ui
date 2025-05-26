@@ -3,6 +3,7 @@ import { LLM, LLMID, OpenRouterLLM, DeepSeekLLM } from "@/types"
 import { toast } from "sonner"
 import { LLM_LIST_MAP } from "./llm/llm-list"
 import { get } from "@vercel/edge-config"
+import { OLLAMA_URL, OLLAMA_API_KEY } from "@/config"
 
 // import {getEnvVarOrEdgeConfigValue} from "@/utils/getEnvVarOrEdgeConfigValue"
 export const fetchHostedModels = async (profile: Tables<"profiles">) => {
@@ -62,13 +63,12 @@ export const fetchOllamaModels = async () => {
       }
       return process.env[name] || ""
     }
-    const OLLAMA_AUTH_TOKEN = process.env.NEXT_PUBLIC_OLLAMA_APIKEY
+    const OLLAMA_AUTH_TOKEN = OLLAMA_API_KEY
     var myHeaders = new Headers()
     myHeaders.append("Authorization", `Bearer ${OLLAMA_AUTH_TOKEN}`)
-    const response = await fetch(
-      process.env.NEXT_PUBLIC_OLLAMA_URL + "/api/tags",
-      { headers: myHeaders }
-    )
+    const response = await fetch(OLLAMA_URL + "/api/tags", {
+      headers: myHeaders
+    })
 
     if (!response.ok) {
       throw new Error(`Ollama server is not responding.`)
