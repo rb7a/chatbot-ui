@@ -48,6 +48,6 @@ workbox-*.js
 workbox-*.js.map
 
 # docker volume
-./docker/volumes
+./docker/volumes/
 # local env files
 ./docker/.env
