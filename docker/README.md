@@ -67,7 +67,7 @@ For more information, see [Securing Your Services](https://supabase.com/docs/gui
    ```bash
    cd docker
    cp .env.example .env
-   cp ../.env.example ../.docker.env
+   cp ../.env.example ../.env.docker
    ```
 
 2. **Edit the `.env` File**
@@ -76,7 +76,7 @@ For more information, see [Securing Your Services](https://supabase.com/docs/gui
 
 3. **Configure Chatbot-UI Environment Variables**
 
-   Edit your Chatbot-UI environment variables file ( `../.docker.env`) as follows：
+   Edit your Chatbot-UI environment variables file ( `../.env.docker`) as follows：
 
    ```
    NEXT_PUBLIC_SUPABASE_PUBLIC_URL=http://<your-server-ip>:8000

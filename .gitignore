@@ -51,4 +51,4 @@ workbox-*.js.map
 # local env files
 ./docker/.env
 
-.docker.env
+.env.docker

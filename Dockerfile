@@ -19,7 +19,7 @@ WORKDIR /app/web
 
 COPY --from=packages /app/web/ .
 COPY . .
-COPY .docker.env .env
+COPY .env.docker .env
 # 使用 standalone 模式构建
 ENV NODE_ENV=production
 RUN npm run build
