@@ -65,7 +65,9 @@ For more information, see [Securing Your Services](https://supabase.com/docs/gui
 1. **Copy the Environment Variable Template**
 
    ```bash
+   cd docker
    cp .env.example .env
+   cp ../.env.example ../.docker.env
    ```
 
 2. **Edit the `.env` File**
@@ -74,11 +76,11 @@ For more information, see [Securing Your Services](https://supabase.com/docs/gui
 
 3. **Configure Chatbot-UI Environment Variables**
 
-   Edit your Chatbot-UI environment variables file ( `.env`) as follows：
+   Edit your Chatbot-UI environment variables file ( `../.docker.env`) as follows：
 
    ```
    NEXT_PUBLIC_SUPABASE_PUBLIC_URL=http://<your-server-ip>:8000
-   NEXT_PUBLIC_SUPABASE_SERVER_URL=http://<your-server-ip>:8000
+   NEXT_PUBLIC_SUPABASE_SERVER_URL=http://kong:8000
    ```
 
    > Replace `<your-server-ip>` with your actual server’s IP address or domain name.
@@ -87,7 +89,7 @@ For more information, see [Securing Your Services](https://supabase.com/docs/gui
 
    ```
    NEXT_PUBLIC_SUPABASE_PUBLIC_URL=http://192.168.1.100:8000
-   NEXT_PUBLIC_SUPABASE_SERVER_URL=http://192.168.1.100:8000
+   NEXT_PUBLIC_SUPABASE_SERVER_URL=http://kong:8000
    ```
 
 ---
@@ -104,7 +106,7 @@ Before running the database migrations, you may need to update the following lin
 **Modify as follows:**
 
 ```sql
-  project_url TEXT := 'http://<your-server-ip>:8000';
+  project_url TEXT := 'http://kong:8000';
   service_role_key TEXT := '<your-actual-service-role-key>';
 ```
 

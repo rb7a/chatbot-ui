@@ -526,7 +526,8 @@ services:
       ]
 
   web:
-    image: hikafeng/chatbot-ui:latest
+    build:
+      context: ../
     restart: always
     environment:
       NEXT_PUBLIC_SUPABASE_SERVER_URL: ${NEXT_PUBLIC_SUPABASE_SERVER_URL:-http://kong:8000}

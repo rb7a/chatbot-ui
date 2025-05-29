@@ -30,7 +30,6 @@ yarn-error.log*
 # local env files
 .env
 .env*.local
-
 # vercel
 .vercel
 
@@ -51,3 +50,5 @@ workbox-*.js.map
 ./docker/volumes/
 # local env files
 ./docker/.env
+
+.docker.env
