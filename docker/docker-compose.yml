@@ -526,6 +526,8 @@ services:
       ]
 
   web:
+    container_name: chatbot-ui
+    image: hikafeng/chatbot-ui:latest
     build:
       context: ../
     restart: always
