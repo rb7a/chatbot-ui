@@ -26,7 +26,6 @@
     "test": "jest",
     "pmst": "pm2 start ecosystem.config.js ",
     "pmllst": "pm2 start ecosystem.local.config.js "
-
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.18.0",
@@ -34,6 +33,7 @@
     "@azure/openai": "^1.0.0-beta.8",
     "@google/generative-ai": "^0.11.4",
     "@hookform/resolvers": "^3.3.2",
+    "@jridgewell/sourcemap-codec": "^1.5.4",
     "@lobehub/icons": "^1.76.0",
     "@mistralai/mistralai": "^0.0.8",
     "@radix-ui/react-accordion": "^1.1.2",
@@ -109,6 +109,7 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^14.0.2",
+    "@rollup/plugin-terser": "^0.4.4",
     "@tailwindcss/typography": "^0.5.10",
     "@testing-library/jest-dom": "^6.2.0",
     "@testing-library/react": "^14.1.2",
