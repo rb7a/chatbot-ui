@@ -225,7 +225,11 @@ export const handleHostedChat = async (
   }
 
   const apiEndpoint =
-    provider === "custom" ? "/api/chat/custom" : `/api/chat/${provider}`
+    provider === "custom"
+      ? /deepseek/i.test(modelData.modelName)
+        ? "/api/chat/custom-deepseek"
+        : "/api/chat/custom"
+      : `/api/chat/${provider}`
 
   const requestBody = {
     chatSettings: payload.chatSettings,
@@ -234,7 +238,6 @@ export const handleHostedChat = async (
   }
 
   if (provider === "deepseek") {
-    // console.log("provider", provider)
     const response = await fetchChatResponse(
       apiEndpoint,
       requestBody,
@@ -255,25 +258,47 @@ export const handleHostedChat = async (
       setToolInUse
     )
   } else {
-    const response = await fetchChatResponse(
-      apiEndpoint,
-      requestBody,
-      true,
-      newAbortController,
-      setIsGenerating,
-      setChatMessages
-    )
-    return await processResponse(
-      response,
-      isRegeneration
-        ? payload.chatMessages[payload.chatMessages.length - 1]
-        : tempAssistantChatMessage,
-      true,
-      newAbortController,
-      setFirstTokenReceived,
-      setChatMessages,
-      setToolInUse
-    )
+    if (provider === "custom" || /deepseek/i.test(modelData.modelName)) {
+      const response = await fetchChatResponse(
+        apiEndpoint,
+        requestBody,
+        true,
+        newAbortController,
+        setIsGenerating,
+        setChatMessages
+      )
+      return await processDeepSeekResponse(
+        response,
+        isRegeneration
+          ? payload.chatMessages[payload.chatMessages.length - 1]
+          : tempAssistantChatMessage,
+        true,
+        newAbortController,
+        setFirstTokenReceived,
+        setChatMessages,
+        setToolInUse
+      )
+    } else {
+      const response = await fetchChatResponse(
+        apiEndpoint,
+        requestBody,
+        true,
+        newAbortController,
+        setIsGenerating,
+        setChatMessages
+      )
+      return await processResponse(
+        response,
+        isRegeneration
+          ? payload.chatMessages[payload.chatMessages.length - 1]
+          : tempAssistantChatMessage,
+        true,
+        newAbortController,
+        setFirstTokenReceived,
+        setChatMessages,
+        setToolInUse
+      )
+    }
   }
 }
 export const fetchChatTokenResponse = async (

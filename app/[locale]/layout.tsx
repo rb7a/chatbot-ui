@@ -84,8 +84,6 @@ export default async function RootLayout({
   params: { locale }
 }: RootLayoutProps) {
   const cookieStore = cookies()
-
-  console.log("SUPABASE_SERVER_URL", SUPABASE_SERVER_URL)
   const supabase = createServerClient<Database>(
     SUPABASE_SERVER_URL!,
     SUPABASE_ANON_KEY!,
