@@ -11,7 +11,7 @@ COPY package.json package-lock.json* ./
 
 # 使用国内镜像加速（可选）
 RUN npm config set registry https://registry.npmmirror.com/ \
-    && npm ci --prefer-offline --no-audit --progress=false
+    && npm ci --prefer-offline --no-audit --progress=false --sharp-binary-host=https://npmmirror.com/mirrors/sharp --sharp-libvips-binary-host=https://npmmirror.com/mirrors/sharp-libvips
 
 # Build stage
 FROM base AS builder
