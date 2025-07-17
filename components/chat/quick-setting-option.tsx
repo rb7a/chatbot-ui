@@ -36,6 +36,7 @@ export const QuickSettingOption: FC<QuickSettingOptionProps> = ({
     assistantImages,
     setChatFiles,
     setSelectedTools,
+    setSelectedMcps,
     setShowFilesDisplay,
     selectedWorkspace,
     availableLocalModels,

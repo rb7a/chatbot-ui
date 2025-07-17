@@ -87,6 +87,7 @@
   "Collections": "Sammlungen",
   "Assistants": "Assistenten",
   "Tools": "Werkzeuge",
+  "Mcps": "MCPs",
   "chat": "chat",
   "preset": "voreinstellung",
   "prompt": "aufforderung",
@@ -103,8 +104,10 @@
   "collections": "sammlungen",
   "assistants": "assistenten",
   "tools": "werkzeuge",
+  "mcps": "mcps",
   "No": "Nein",
   "No matching tools." : "Keine passenden Werkzeuge.",
+  "No matching mcps." : "Keine passenden MCPs.",
   "No matching assistants." : "Keine passenden Assistenten.",
   "No matching files." : "Keine passenden Dateien.",
   "No matching prompts." : "Keine passenden Aufforderungen."

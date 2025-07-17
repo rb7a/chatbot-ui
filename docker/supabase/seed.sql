@@ -147,4 +147,20 @@ BEGIN
     ('e9fc7e46-a8a5-4fd4-8ba7-af485013e6fa', tool1_id, workspace1_id);
   END;
 
+  -- Start data for mcps
+  INSERT INTO mcps (user_id, description, name, schema, url, created_at, updated_at, sharing) VALUES
+  ('e9fc7e46-a8a5-4fd4-8ba7-af485013e6fa', 'This is a description for Mcp 1', 'Mcp 1', '{}', 'http://example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'private');
+
+  -- Start data for mcp_workspaces
+  DECLARE
+    mcp1_id UUID;
+    workspace1_id UUID;
+  BEGIN
+    SELECT id INTO mcp1_id FROM mcps WHERE name='Mcp 1';
+    SELECT id INTO workspace1_id FROM workspaces WHERE name='Home';
+
+    INSERT INTO mcp_workspaces (user_id, mcp_id, workspace_id) VALUES
+    ('e9fc7e46-a8a5-4fd4-8ba7-af485013e6fa', mcp1_id, workspace1_id);
+  END;
+
 END $$;

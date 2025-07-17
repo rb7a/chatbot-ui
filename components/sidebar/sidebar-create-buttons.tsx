@@ -12,6 +12,7 @@ import { CreateModel } from "./items/models/create-model"
 import { CreatePreset } from "./items/presets/create-preset"
 import { CreatePrompt } from "./items/prompts/create-prompt"
 import { CreateTool } from "./items/tools/create-tool"
+import { CreateMcp } from "./items/mcps/create-mcp"
 import { useTranslation } from "react-i18next"
 
 interface SidebarCreateButtonsProps {
@@ -34,6 +35,7 @@ export const SidebarCreateButtons: FC<SidebarCreateButtonsProps> = ({
   const [isCreatingCollection, setIsCreatingCollection] = useState(false)
   const [isCreatingAssistant, setIsCreatingAssistant] = useState(false)
   const [isCreatingTool, setIsCreatingTool] = useState(false)
+  const [isCreatingMcp, setIsCreatingMcp] = useState(false)
   const [isCreatingModel, setIsCreatingModel] = useState(false)
 
   const handleCreateFolder = async () => {
@@ -85,6 +87,11 @@ export const SidebarCreateButtons: FC<SidebarCreateButtonsProps> = ({
       case "tools":
         return async () => {
           setIsCreatingTool(true)
+        }
+
+      case "mcps":
+        return async () => {
+          setIsCreatingMcp(true)
         }
 
       case "models":
@@ -147,7 +154,9 @@ export const SidebarCreateButtons: FC<SidebarCreateButtonsProps> = ({
       {isCreatingTool && (
         <CreateTool isOpen={isCreatingTool} onOpenChange={setIsCreatingTool} />
       )}
-
+      {isCreatingMcp && (
+        <CreateMcp isOpen={isCreatingMcp} onOpenChange={setIsCreatingMcp} />
+      )}
       {isCreatingModel && (
         <CreateModel
           isOpen={isCreatingModel}

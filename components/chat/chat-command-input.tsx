@@ -5,6 +5,7 @@ import { usePromptAndCommand } from "./chat-hooks/use-prompt-and-command"
 import { FilePicker } from "./file-picker"
 import { PromptPicker } from "./prompt-picker"
 import { ToolPicker } from "./tool-picker"
+import { McpPicker } from "./mcp-picker"
 
 interface ChatCommandInputProps {}
 

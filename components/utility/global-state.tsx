@@ -52,6 +52,7 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
   const [presets, setPresets] = useState<Tables<"presets">[]>([])
   const [prompts, setPrompts] = useState<Tables<"prompts">[]>([])
   const [tools, setTools] = useState<Tables<"tools">[]>([])
+  const [mcps, setMcps] = useState<Tables<"mcps">[]>([])
   const [workspaces, setWorkspaces] = useState<Tables<"workspaces">[]>([])
 
   // MODELS STORE
@@ -106,10 +107,14 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
   const [isFilePickerOpen, setIsFilePickerOpen] = useState(false)
   const [hashtagCommand, setHashtagCommand] = useState("")
   const [isToolPickerOpen, setIsToolPickerOpen] = useState(false)
+  const [isMcpPickerOpen, setIsMcpPickerOpen] = useState(false)
   const [toolCommand, setToolCommand] = useState("")
+  const [mcpCommand, setMcpCommand] = useState("")
+
   const [focusPrompt, setFocusPrompt] = useState(false)
   const [focusFile, setFocusFile] = useState(false)
   const [focusTool, setFocusTool] = useState(false)
+  const [focusMcp, setFocusMcp] = useState(false)
   const [focusAssistant, setFocusAssistant] = useState(false)
   const [atCommand, setAtCommand] = useState("")
   const [isAssistantPickerOpen, setIsAssistantPickerOpen] = useState(false)
@@ -128,6 +133,10 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
   // TOOL STORE
   const [selectedTools, setSelectedTools] = useState<Tables<"tools">[]>([])
   const [toolInUse, setToolInUse] = useState<string>("none")
+
+  // MCP STORE
+  const [selectedMcps, setSelectedMcps] = useState<Tables<"mcps">[]>([])
+  const [mcpInuse, setMcpInUse] = useState<string>("none")
 
   const fetchStartingData = useCallback(async () => {
     const session = (await supabase.auth.getSession()).data.session
@@ -244,6 +253,8 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
         setPrompts,
         tools,
         setTools,
+        mcps,
+        setMcps,
         workspaces,
         setWorkspaces,
 
@@ -309,12 +320,18 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
         setIsToolPickerOpen,
         toolCommand,
         setToolCommand,
+        isMcpPickerOpen,
+        setIsMcpPickerOpen,
+        mcpCommand,
+        setMcpCommand,
         focusPrompt,
         setFocusPrompt,
         focusFile,
         setFocusFile,
         focusTool,
         setFocusTool,
+        focusMcp,
+        setFocusMcp,
         focusAssistant,
         setFocusAssistant,
         atCommand,
@@ -344,7 +361,13 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
         selectedTools,
         setSelectedTools,
         toolInUse,
-        setToolInUse
+        setToolInUse,
+
+        // MCP STORE
+        selectedMcps,
+        setSelectedMcps,
+        mcpInuse,
+        setMcpInUse
       }}
     >
       {children}

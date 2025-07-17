@@ -2,6 +2,7 @@ import { ChatbotUIContext } from "@/context/context"
 import { getAssistantCollectionsByAssistantId } from "@/db/assistant-collections"
 import { getAssistantFilesByAssistantId } from "@/db/assistant-files"
 import { getAssistantToolsByAssistantId } from "@/db/assistant-tools"
+import { getAssistantMcpsByAssistantId } from "@/db/assistant-mcps"
 import { getCollectionFilesByCollectionId } from "@/db/collection-files"
 import useHotkey from "@/lib/hooks/use-hotkey"
 import { LLM_LIST } from "@/lib/models/llm/llm-list"
@@ -42,6 +43,7 @@ export const QuickSettings: FC<QuickSettingsProps> = ({}) => {
     assistantImages,
     setChatFiles,
     setSelectedTools,
+    setSelectedMcps,
     setShowFilesDisplay,
     selectedWorkspace,
     availableLocalModels,
@@ -88,6 +90,8 @@ export const QuickSettings: FC<QuickSettingsProps> = ({}) => {
       const assistantTools = (await getAssistantToolsByAssistantId(item.id))
         .tools
       setSelectedTools(assistantTools)
+      const assistantMcps = (await getAssistantMcpsByAssistantId(item.id)).mcps
+      setSelectedMcps(assistantMcps)
       setChatFiles(
         allFiles.map(file => ({
           id: file.id,
@@ -104,11 +108,13 @@ export const QuickSettings: FC<QuickSettingsProps> = ({}) => {
       setSelectedAssistant(null)
       setChatFiles([])
       setSelectedTools([])
+      setSelectedMcps([])
     } else {
       setSelectedPreset(null)
       setSelectedAssistant(null)
       setChatFiles([])
       setSelectedTools([])
+      setSelectedMcps([])
       if (selectedWorkspace) {
         setChatSettings({
           model: selectedWorkspace.default_model as LLMID,

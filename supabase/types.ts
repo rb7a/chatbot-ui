@@ -172,6 +172,52 @@ export type Database = {
           },
         ]
       }
+      assistant_mcps: {
+        Row: {
+          assistant_id: string
+          created_at: string
+          mcp_id: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          assistant_id: string
+          created_at?: string
+          mcp_id: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          assistant_id?: string
+          created_at?: string
+          mcp_id?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assistant_mcps_assistant_id_fkey"
+            columns: ["assistant_id"]
+            isOneToOne: false
+            referencedRelation: "assistants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assistant_mcps_mcp_id_fkey"
+            columns: ["mcp_id"]
+            isOneToOne: false
+            referencedRelation: "mcps"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assistant_mcps_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       assistant_workspaces: {
         Row: {
           assistant_id: string
@@ -1396,6 +1442,109 @@ export type Database = {
           },
         ]
       }
+      mcp_workspaces: {
+        Row: {
+          created_at: string
+          mcp_id: string
+          updated_at: string | null
+          user_id: string
+          workspace_id: string
+        }
+        Insert: {
+          created_at?: string
+          mcp_id: string
+          updated_at?: string | null
+          user_id: string
+          workspace_id: string
+        }
+        Update: {
+          created_at?: string
+          mcp_id?: string
+          updated_at?: string | null
+          user_id?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mcp_workspaces_mcp_id_fkey"
+            columns: ["mcp_id"]
+            isOneToOne: false
+            referencedRelation: "mcps"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mcp_workspaces_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mcp_workspaces_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mcps: {
+        Row: {
+          created_at: string
+          custom_headers: Json
+          description: string
+          folder_id: string | null
+          id: string
+          name: string
+          schema: Json
+          sharing: string
+          updated_at: string | null
+          url: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          custom_headers?: Json
+          description: string
+          folder_id?: string | null
+          id?: string
+          name: string
+          schema?: Json
+          sharing?: string
+          updated_at?: string | null
+          url: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          custom_headers?: Json
+          description?: string
+          folder_id?: string | null
+          id?: string
+          name?: string
+          schema?: Json
+          sharing?: string
+          updated_at?: string | null
+          url?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mcps_folder_id_fkey"
+            columns: ["folder_id"]
+            isOneToOne: false
+            referencedRelation: "folders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mcps_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }       
       workspaces: {
         Row: {
           created_at: string

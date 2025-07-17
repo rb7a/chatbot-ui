@@ -42,6 +42,7 @@ export const PresetItem: FC<PresetItemProps> = ({ preset }) => {
     setSelectedChat,
     setChats,
     setSelectedTools,
+    setSelectedMcps,
     availableLocalModels,
     availableOpenRouterModels,
     availableDeepSeekModels,

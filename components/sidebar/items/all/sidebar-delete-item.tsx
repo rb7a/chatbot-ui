@@ -18,6 +18,7 @@ import { deletePreset } from "@/db/presets"
 import { deletePrompt } from "@/db/prompts"
 import { deleteFileFromStorage } from "@/db/storage/files"
 import { deleteTool } from "@/db/tools"
+import { deleteMcp } from "@/db/mcps"
 import { Tables } from "@/supabase/types"
 import { ContentType, DataItemType } from "@/types"
 import { FC, useContext, useRef, useState } from "react"
@@ -40,6 +41,7 @@ export const SidebarDeleteItem: FC<SidebarDeleteItemProps> = ({
     setCollections,
     setAssistants,
     setTools,
+    setMcps,
     setModels
   } = useContext(ChatbotUIContext)
 
@@ -73,6 +75,9 @@ export const SidebarDeleteItem: FC<SidebarDeleteItemProps> = ({
     tools: async (tool: Tables<"tools">) => {
       await deleteTool(tool.id)
     },
+    mcps: async (mcp: Tables<"mcps">) => {
+      await deleteMcp(mcp.id)
+    },
     models: async (model: Tables<"models">) => {
       await deleteModel(model.id)
     }
@@ -86,6 +91,7 @@ export const SidebarDeleteItem: FC<SidebarDeleteItemProps> = ({
     collections: setCollections,
     assistants: setAssistants,
     tools: setTools,
+    mcps: setMcps,
     models: setModels
   }
 

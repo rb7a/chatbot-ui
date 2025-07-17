@@ -102,7 +102,7 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         {ENALBE_VERCEL_ANALYTICS === "true" && <Analytics />}
-        <Providers attribute="class" defaultTheme="dark">
+        <Providers attribute="class" defaultTheme="light">
           <TranslationsProvider
             namespaces={i18nNamespaces}
             locale={locale}

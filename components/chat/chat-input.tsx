@@ -47,6 +47,9 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
     focusTool,
     setFocusTool,
     isToolPickerOpen,
+    focusMcp,
+    setFocusMcp,
+    isMcpPickerOpen,
     isPromptPickerOpen,
     setIsPromptPickerOpen,
     isFilePickerOpen,
@@ -54,6 +57,8 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
     chatSettings,
     selectedTools,
     setSelectedTools,
+    selectedMcps,
+    setSelectedMcps,
     assistantImages
   } = useContext(ChatbotUIContext)
 
@@ -93,6 +98,7 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
       isPromptPickerOpen ||
       isFilePickerOpen ||
       isToolPickerOpen ||
+      isMcpPickerOpen ||
       isAssistantPickerOpen
     ) {
       if (
@@ -105,6 +111,7 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
         if (isPromptPickerOpen) setFocusPrompt(!focusPrompt)
         if (isFilePickerOpen) setFocusFile(!focusFile)
         if (isToolPickerOpen) setFocusTool(!focusTool)
+        if (isMcpPickerOpen) setFocusMcp(!focusMcp)
         if (isAssistantPickerOpen) setFocusAssistant(!focusAssistant)
       }
     }
@@ -184,6 +191,25 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
                 <IconBolt size={20} />
 
                 <div>{tool.name}</div>
+              </div>
+            </div>
+          ))}
+
+        {selectedMcps &&
+          selectedMcps.map((mcp, index) => (
+            <div
+              key={index}
+              className="flex justify-center"
+              onClick={() =>
+                setSelectedMcps(
+                  selectedMcps.filter(selectedMcp => selectedMcp.id !== mcp.id)
+                )
+              }
+            >
+              <div className="flex cursor-pointer items-center justify-center space-x-1 rounded-lg bg-purple-600 px-3 py-1 hover:opacity-50">
+                <IconBolt size={20} />
+
+                <div>{mcp.name}</div>
               </div>
             </div>
           ))}

@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { MODEL_NAME_MAX } from "@/db/limits"
 import { Tables, TablesUpdate } from "@/supabase/types"
-import { IconSparkles } from "@tabler/icons-react"
+import { IconBoxModel } from "@tabler/icons-react"
 import { FC, useState } from "react"
 import { SidebarItem } from "../all/sidebar-display-item"
 
@@ -25,7 +25,7 @@ export const ModelItem: FC<ModelItemProps> = ({ model }) => {
       item={model}
       isTyping={isTyping}
       contentType="models"
-      icon={<IconSparkles height={30} width={30} />}
+      icon={<IconBoxModel height={30} width={30} />}
       updateState={
         {
           api_key: apiKey,

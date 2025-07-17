@@ -2,6 +2,7 @@ import { ChatbotUIContext } from "@/context/context"
 import { getAssistantCollectionsByAssistantId } from "@/db/assistant-collections"
 import { getAssistantFilesByAssistantId } from "@/db/assistant-files"
 import { getAssistantToolsByAssistantId } from "@/db/assistant-tools"
+import { getAssistantMcpsByAssistantId } from "@/db/assistant-mcps"
 import { updateChat } from "@/db/chats"
 import { getCollectionFilesByCollectionId } from "@/db/collection-files"
 import { deleteMessagesIncludingAndAfter } from "@/db/messages"
@@ -21,6 +22,7 @@ import {
   processResponse,
   validateChatSettings
 } from "../chat-helpers"
+import { set } from "zod"
 
 export const useChatHandler = () => {
   const router = useRouter()
@@ -39,6 +41,7 @@ export const useChatHandler = () => {
     setSelectedChat,
     setChats,
     setSelectedTools,
+    setSelectedMcps,
     availableLocalModels,
     availableOpenRouterModels,
     availableDeepSeekModels,
@@ -57,26 +60,34 @@ export const useChatHandler = () => {
     chatFileItems,
     setChatFileItems,
     setToolInUse,
+    setMcpInUse,
     useRetrieval,
     sourceCount,
     setIsPromptPickerOpen,
     setIsFilePickerOpen,
     selectedTools,
+    selectedMcps,
     selectedPreset,
     setChatSettings,
     models,
     isPromptPickerOpen,
     isFilePickerOpen,
-    isToolPickerOpen
+    isToolPickerOpen,
+    isMcpPickerOpen
   } = useContext(ChatbotUIContext)
 
   const chatInputRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
-    if (!isPromptPickerOpen || !isFilePickerOpen || !isToolPickerOpen) {
+    if (
+      !isPromptPickerOpen ||
+      !isFilePickerOpen ||
+      !isToolPickerOpen ||
+      !isMcpPickerOpen
+    ) {
       chatInputRef.current?.focus()
     }
-  }, [isPromptPickerOpen, isFilePickerOpen, isToolPickerOpen])
+  }, [isPromptPickerOpen, isFilePickerOpen, isToolPickerOpen, isMcpPickerOpen])
 
   const handleNewChat = async () => {
     if (!selectedWorkspace) return
@@ -99,6 +110,9 @@ export const useChatHandler = () => {
 
     setSelectedTools([])
     setToolInUse("none")
+
+    setSelectedMcps([])
+    setMcpInUse("none")
 
     if (selectedAssistant) {
       setChatSettings({
@@ -132,8 +146,11 @@ export const useChatHandler = () => {
       const assistantTools = (
         await getAssistantToolsByAssistantId(selectedAssistant.id)
       ).tools
-
+      const assistantMcps = (
+        await getAssistantMcpsByAssistantId(selectedAssistant.id)
+      ).mcps
       setSelectedTools(assistantTools)
+      setSelectedMcps(assistantMcps)
       setChatFiles(
         allFiles.map(file => ({
           id: file.id,
@@ -240,7 +257,7 @@ export const useChatHandler = () => {
         useRetrieval
       ) {
         setToolInUse("retrieval")
-
+        setMcpInUse("retrieval")
         retrievedFileItems = await handleRetrieval(
           userInput,
           newMessageFiles,

@@ -33,7 +33,8 @@ export const Import: FC<ImportProps> = ({}) => {
     setFiles,
     setCollections,
     setAssistants,
-    setTools
+    setTools,
+    setMcps
   } = useContext(ChatbotUIContext)
 
   const inputRef = useRef<HTMLInputElement>(null)
@@ -66,7 +67,8 @@ export const Import: FC<ImportProps> = ({}) => {
     files: setFiles,
     collections: setCollections,
     assistants: setAssistants,
-    tools: setTools
+    tools: setTools,
+    mcps: setMcps
   }
 
   const handleSelectFiles = async (e: any) => {
