@@ -289,40 +289,79 @@ export const useChatHandler = () => {
       }
 
       let generatedText = ""
-      if (selectedTools.length > 0) {
-        setToolInUse("Tools")
+      if (selectedTools.length > 0 || selectedMcps.length > 0) {
+        if (selectedTools.length > 0) {
+          setToolInUse("Tools")
 
-        const formattedMessages = await buildFinalMessages(
-          payload,
-          profile!,
-          chatImages
-        )
+          const formattedMessages = await buildFinalMessages(
+            payload,
+            profile!,
+            chatImages
+          )
 
-        const response = await fetch("/api/chat/tools", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            chatSettings: payload.chatSettings,
-            messages: formattedMessages,
-            selectedTools
+          const response = await fetch("/api/chat/tools", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              chatSettings: payload.chatSettings,
+              messages: formattedMessages,
+              selectedTools,
+              modelData
+            })
           })
-        })
 
-        setToolInUse("none")
+          setToolInUse("none")
 
-        generatedText = await processResponse(
-          response,
-          isRegeneration
-            ? payload.chatMessages[payload.chatMessages.length - 1]
-            : tempAssistantChatMessage,
-          true,
-          newAbortController,
-          setFirstTokenReceived,
-          setChatMessages,
-          setToolInUse
-        )
+          generatedText = await processResponse(
+            response,
+            isRegeneration
+              ? payload.chatMessages[payload.chatMessages.length - 1]
+              : tempAssistantChatMessage,
+            true,
+            newAbortController,
+            setFirstTokenReceived,
+            setChatMessages,
+            setToolInUse
+          )
+        }
+        if (selectedMcps.length > 0) {
+          setMcpInUse("Mcps")
+
+          const formattedMessages = await buildFinalMessages(
+            payload,
+            profile!,
+            chatImages
+          )
+
+          const response = await fetch("/api/chat/mcps", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              chatSettings: payload.chatSettings,
+              messages: formattedMessages,
+              selectedMcps,
+              modelData
+            })
+          })
+
+          setMcpInUse("none")
+
+          generatedText = await processResponse(
+            response,
+            isRegeneration
+              ? payload.chatMessages[payload.chatMessages.length - 1]
+              : tempAssistantChatMessage,
+            true,
+            newAbortController,
+            setFirstTokenReceived,
+            setChatMessages,
+            setMcpInUse
+          )
+        }
       } else {
         if (modelData!.provider === "ollama") {
           generatedText = await handleLocalChat(

@@ -1,6 +1,6 @@
 import { ChatbotUIContext } from "@/context/context"
 import { Tables } from "@/supabase/types"
-import { IconBolt } from "@tabler/icons-react"
+import { MCP } from "@lobehub/icons"
 import { FC, useContext, useEffect, useRef } from "react"
 import { usePromptAndCommand } from "./chat-hooks/use-prompt-and-command"
 import { useTranslation } from "react-i18next"
@@ -86,7 +86,7 @@ export const McpPicker: FC<McpPickerProps> = ({}) => {
                   onClick={() => callSelectMcp(item as Tables<"mcps">)}
                   onKeyDown={getKeyDownHandler(index)}
                 >
-                  <IconBolt size={32} />
+                  <MCP size={32} />
 
                   <div className="ml-3 flex flex-col">
                     <div className="font-bold">{item.name}</div>

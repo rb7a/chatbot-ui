@@ -2,12 +2,11 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { TextareaAutosize } from "@/components/ui/textarea-autosize"
 import { MCP_DESCRIPTION_MAX, MCP_NAME_MAX } from "@/db/limits"
-import { validateOpenAPI } from "@/lib/openapi-conversion"
+import { validateMcpServer } from "@/lib/mcpserver-conversion"
 import { Tables } from "@/supabase/types"
 import { MCP } from "@lobehub/icons"
 import { FC, useState } from "react"
 import { SidebarItem } from "../all/sidebar-display-item"
-
 interface McpItemProps {
   mcp: Tables<"mcps">
 }
@@ -119,14 +118,14 @@ export const McpItem: FC<McpItemProps> = ({ mcp }) => {
 
                 try {
                   const parsedSchema = JSON.parse(value)
-                  validateOpenAPI(parsedSchema)
+                  validateMcpServer(parsedSchema)
                     .then(() => setSchemaError("")) // Clear error if validation is successful
                     .catch(error => setSchemaError(error.message)) // Set specific validation error message
                 } catch (error) {
                   setSchemaError("Invalid JSON format") // Set error for invalid JSON format
                 }
               }}
-              minRows={15}
+              minRows={8}
             />
 
             <div className="text-xs text-red-500">{schemaError}</div>

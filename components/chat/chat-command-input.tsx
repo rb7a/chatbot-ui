@@ -42,7 +42,7 @@ export const ChatCommandInput: FC<ChatCommandInputProps> = ({}) => {
       />
 
       <ToolPicker />
-
+      <McpPicker />
       <AssistantPicker />
     </>
   )

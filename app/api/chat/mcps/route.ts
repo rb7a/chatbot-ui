@@ -1,218 +1,426 @@
-import { openapiToFunctions } from "@/lib/openapi-conversion"
-import { checkApiKey, getServerProfile } from "@/lib/server/server-chat-helpers"
-import { Tables } from "@/supabase/types"
-import { ChatSettings } from "@/types"
-import { OpenAIStream, StreamingTextResponse } from "ai"
-import OpenAI from "openai"
-import { ChatCompletionCreateParamsBase } from "openai/resources/chat/completions.mjs"
+// import { openapiToFunctions } from "@/lib/openapi-conversion"
+// import { mcpserverToMCP } from "@/lib/mcpserver-conversion"
 
-export async function POST(request: Request) {
-  const json = await request.json()
-  const { chatSettings, messages, selectedMcps } = json as {
-    chatSettings: ChatSettings
-    messages: any[]
-    selectedMcps: Tables<"mcps">[]
-  }
+// import { checkApiKey, getServerProfile } from "@/lib/server/server-chat-helpers"
+// import { Tables } from "@/supabase/types"
+// import { ChatSettings } from "@/types"
+// import { OpenAIStream, StreamingTextResponse } from "ai"
+// import OpenAI from "openai"
+// import { ChatCompletionCreateParamsBase } from "openai/resources/chat/completions.mjs"
+// import cors from "cors";
+// import { Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
+// import express from "express";
+// import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+// import { useState } from "react";
+// import { Result } from "@modelcontextprotocol/sdk/types.js";
+// import packageJson from "@/package.json";
+// import { LLM } from "@/types"
+// import { Notification, StdErrNotificationSchema } from "@/components/mcp/lib/notificationTypes"
+// import {
+//   SSEClientTransport,
+//   SseError,
+//   SSEClientTransportOptions,
+// } from "@modelcontextprotocol/sdk/client/sse.js";
 
-  try {
-    const profile = await getServerProfile()
+// export async function POST(request: Request) {
+//   const json = await request.json()
+//   const { chatSettings, messages, selectedMcps,modelData} = json as {
+//     chatSettings: ChatSettings
+//     messages: any[]
+//     selectedMcps: Tables<"mcps">[]
+//     modelData: LLM
+//   }
 
-    checkApiKey(profile.openai_api_key, "OpenAI")
+//   try {
+//       const profile = await getServerProfile()
 
-    const openai = new OpenAI({
-      apiKey: profile.openai_api_key || "",
-      organization: profile.openai_organization_id
-    })
+//       checkApiKey(profile.openai_api_key, "OpenAI")
+//       let modelBaseUrl = ""
+//       let modelApiKey = ""
+//       const provider = modelData.provider === "openai" && profile.use_azure_openai
+//         ? "azure"
+//         : modelData.provider
 
-    let allMcps: OpenAI.Chat.Completions.ChatCompletionMcp[] = []
-    let allRouteMaps = {}
-    let schemaDetails = []
+//       if (provider === "azure") {
+//       const AzureOpenaiENDPOINT = profile.azure_openai_endpoint
+//       const AzureOpenaiKEY = profile.azure_openai_api_key
+//       let AzureOpenaiDEPLOYMENT_ID = ""
+//       switch (chatSettings.model) {
+//         case "gpt-3.5-turbo":
+//           AzureOpenaiDEPLOYMENT_ID = profile.azure_openai_35_turbo_id || ""
+//           break
+//         case "gpt-4-turbo-preview":
+//           AzureOpenaiDEPLOYMENT_ID = profile.azure_openai_45_turbo_id || ""
+//           break
+//         case "gpt-4-vision-preview":
+//           AzureOpenaiDEPLOYMENT_ID = profile.azure_openai_45_vision_id || ""
+//           break
+//         default:
+//           return new Response(JSON.stringify({ message: "Model not found" }), {
+//             status: 400
+//           })
+//       }
+//       if (!AzureOpenaiENDPOINT || !AzureOpenaiKEY || !AzureOpenaiDEPLOYMENT_ID) {
+//         return new Response(
+//           JSON.stringify({ message: "Azure resources not found" }),
+//           {
+//             status: 400
+//           }
+//         )
+//       }
+//         modelBaseUrl = `${AzureOpenaiENDPOINT}/openai/deployments/${AzureOpenaiDEPLOYMENT_ID}`
+//         modelApiKey = AzureOpenaiKEY
+//       }
+//       else if (provider === "openai") {
+//         modelBaseUrl = "https://api.openai.com/v1"
+//         modelApiKey = profile.openai_api_key || ""
+//       }
+//       else if (provider === "openrouter") {
+//         modelBaseUrl = "https://openrouter.ai/api/v1"
+//         modelApiKey = profile.openrouter_api_key || ""
+//       }
+//       else if (provider === "anthropic") {
+//         return new Response(
+//           JSON.stringify({ message: "anthropic tool not support, please wait fix" }),
+//           {
+//             status: 400
+//           }
+//         )
+//       }
+//       else if (provider === "custom") {
+//         return new Response(
+//           JSON.stringify({ message: "custom tool not support, please wait fix" }),
+//           {
+//             status: 400
+//           }
+//         )
+//       }
+//       else {
+//         return new Response(
+//           JSON.stringify({ message: "other model not support, please wait fix" }),
+//           {
+//             status: 400
+//           }
+//         )}
+//       const openai = new OpenAI({
+//         baseURL: modelBaseUrl,
+//         apiKey: modelApiKey
+//       })
 
-    for (const selectedMcp of selectedMcps) {
-      try {
-        const convertedSchema = await openapiToFunctions(
-          JSON.parse(selectedMcp.schema as string)
-        )
-        const mcps = convertedSchema.functions || []
-        allMcps = allMcps.concat(mcps)
+//     let allTools: OpenAI.Chat.Completions.ChatCompletionTool[] = []
+//     const [mcpClient, setMcpClient] = useState<Client | null>(null);
+//     const client = new Client<Request, Notification, Result>(
+//       {
+//         name: "mcp-inspector",
+//         version: packageJson.version,
+//       },
+//       {
+//         capabilities: {
+//           sampling: {},
+//           roots: {
+//             listChanged: true,
+//           },
+//         },
+//       },
+//     );
 
-        const routeMap = convertedSchema.routes.reduce(
-          (map: Record<string, string>, route) => {
-            map[route.path.replace(/{(\w+)}/g, ":$1")] = route.operationId
-            return map
-          },
-          {}
-        )
+//     let allRouteMaps = {}
+//     // let schemaDetails = []
 
-        allRouteMaps = { ...allRouteMaps, ...routeMap }
+//     for (const selectedMcp of selectedMcps) {
+//       try {
+//         const convertedSchema = await mcpserverToMCP(
+//           JSON.parse(selectedMcp.schema as string)
+//         )
+//         const mcpProxyServerUrl = convertedSchema.mcpserver.url
+//         const transportOptions = {
+//                     eventSourceInit: {
+//                       fetch: (
+//                         url: string | URL | globalThis.Request,
+//                         init?: RequestInit,
+//                       ) =>
+//                         fetch(url, {
+//                           ...init,
+//                         }),
+//                     },
+//                   };
+//         const transport = new SSEClientTransport(
+//                             mcpProxyServerUrl as URL,
+//                             transportOptions,
+//                           );
+//         await client.connect(transport as Transport);
+//         setMcpClient(client);
+//         // allTools = allTools.concat(tools)
 
-        schemaDetails.push({
-          title: convertedSchema.info.title,
-          description: convertedSchema.info.description,
-          url: convertedSchema.info.server,
-          headers: selectedMcp.custom_headers,
-          routeMap,
-          requestInBody: convertedSchema.routes[0].requestInBody
-        })
-      } catch (error: any) {
-        console.error("Error converting schema", error)
-      }
-    }
+//         // const routeMap = convertedSchema.routes.reduce(
+//         //   (map: Record<string, string>, route) => {
+//         //     map[route.path.replace(/{(\w+)}/g, ":$1")] = route.operationId
+//         //     return map
+//         //   },
+//         //   {}
+//         // )
 
-    const firstResponse = await openai.chat.completions.create({
-      model: chatSettings.model as ChatCompletionCreateParamsBase["model"],
-      messages,
-      mcps: allMcps.length > 0 ? allMcps : undefined
-    })
+//         // allRouteMaps = { ...allRouteMaps, ...routeMap }
 
-    const message = firstResponse.choices[0].message
-    messages.push(message)
-    const mcpCalls = message.mcp_calls || []
+//         // schemaDetails.push({
+//         //   title: convertedSchema.info.title,
+//         //   description: convertedSchema.info.description,
+//         //   url: convertedSchema.info.server,
+//         //   headers: selectedTool.custom_headers,
+//         //   routeMap,
+//         //   requestInBody: convertedSchema.routes[0].requestInBody
+//         // })
+//       } catch (error: any) {
+//         console.error("Error converting schema", error)
+//       }
+//     }
 
-    if (mcpCalls.length === 0) {
-      return new Response(message.content, {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-    }
+//     // let response =
+//     const list_tool_response = {
+//       "jsonrpc": "2.0",
+//       "id": 1,
+//       "result": {
+//         "tools": [
+//           {
+//             "name": "multiply",
+//             "inputSchema": {
+//               "type": "object",
+//               "properties": {
+//                 "a": {
+//                   "type": "number"
+//                 },
+//                 "b": {
+//                   "type": "number"
+//                 }
+//               },
+//               "required": [
+//                 "a",
+//                 "b"
+//               ],
+//               "additionalProperties": false,
+//               "$schema": "http://json-schema.org/draft-07/schema#"
+//             }
+//           },
+//           {
+//             "name": "greet",
+//             "inputSchema": {
+//               "type": "object",
+//               "properties": {
+//                 "name": {
+//                   "type": "string"
+//                 }
+//               },
+//               "required": [
+//                 "name"
+//               ],
+//               "additionalProperties": false,
+//               "$schema": "http://json-schema.org/draft-07/schema#"
+//             }
+//           },
+//           {
+//             "name": "checkPalindrome",
+//             "inputSchema": {
+//               "type": "object",
+//               "properties": {
+//                 "text": {
+//                   "type": "string"
+//                 }
+//               },
+//               "required": [
+//                 "text"
+//               ],
+//               "additionalProperties": false,
+//               "$schema": "http://json-schema.org/draft-07/schema#"
+//             }
+//           },
+//           {
+//             "name": "serverInfo",
+//             "inputSchema": {
+//               "type": "object",
+//               "properties": {},
+//               "additionalProperties": false,
+//               "$schema": "http://json-schema.org/draft-07/schema#"
+//             }
+//           },
+//           {
+//             "name": "askFavoritePoem",
+//             "inputSchema": {
+//               "type": "object",
+//               "properties": {},
+//               "additionalProperties": false,
+//               "$schema": "http://json-schema.org/draft-07/schema#"
+//             }
+//           }
+//         ]
+//       }
+//     }
+//     // 收集所有工具
+//     for (const list_tool_response_result_tool of list_tool_response.result.tools) {
+//       const mcp_tool = {
+//         type: "function",
+//         function: {
+//           name: list_tool_response_result_tool.name,
+//           description: "description",
+//           parameters: list_tool_response_result_tool.inputSchema // 假设 inputSchema 为 JSON Schema
+//         }
+//       }
+//       allTools.concat(mcp_tool)
 
-    if (mcpCalls.length > 0) {
-      for (const mcpCall of mcpCalls) {
-        const functionCall = mcpCall.function
-        const functionName = functionCall.name
-        const argumentsString = mcpCall.function.arguments.trim()
-        const parsedArgs = JSON.parse(argumentsString)
+//       const firstResponse = await openai.chat.completions.create({
+//         model: chatSettings.model as ChatCompletionCreateParamsBase["model"],
+//         messages,
+//         tools: allTools.length > 0 ? allTools : undefined
+//       })
 
-        // Find the schema detail that contains the function name
-        const schemaDetail = schemaDetails.find(detail =>
-          Object.values(detail.routeMap).includes(functionName)
-        )
+//       const message = firstResponse.choices[0].message
+//       messages.push(message)
+//       const toolCalls = message.tool_calls || []
 
-        if (!schemaDetail) {
-          throw new Error(`Function ${functionName} not found in any schema`)
-        }
+//       if (toolCalls.length === 0) {
+//         return new Response(message.content, {
+//           headers: {
+//             "Content-Type": "application/json"
+//           }
+//         })
+//       }
 
-        const pathTemplate = Object.keys(schemaDetail.routeMap).find(
-          key => schemaDetail.routeMap[key] === functionName
-        )
+//       if (toolCalls.length > 0) {
+//         for (const toolCall of toolCalls) {
+//           const functionCall = toolCall.function
+//           const functionName = functionCall.name
+//           const argumentsString = toolCall.function.arguments.trim()
+//           const parsedArgs = JSON.parse(argumentsString)
 
-        if (!pathTemplate) {
-          throw new Error(`Path for function ${functionName} not found`)
-        }
+//           // Find the schema detail that contains the function name
+//           const schemaDetail = schemaDetails.find(detail =>
+//             Object.values(detail.routeMap).includes(functionName)
+//           )
 
-        const path = pathTemplate.replace(/:(\w+)/g, (_, paramName) => {
-          const value = parsedArgs.parameters[paramName]
-          if (!value) {
-            throw new Error(
-              `Parameter ${paramName} not found for function ${functionName}`
-            )
-          }
-          return encodeURIComponent(value)
-        })
+//           if (!schemaDetail) {
+//             throw new Error(`Function ${functionName} not found in any schema`)
+//           }
 
-        if (!path) {
-          throw new Error(`Path for function ${functionName} not found`)
-        }
+//           const pathTemplate = Object.keys(schemaDetail.routeMap).find(
+//             key => schemaDetail.routeMap[key] === functionName
+//           )
 
-        // Determine if the request should be in the body or as a query
-        const isRequestInBody = schemaDetail.requestInBody
-        let data = {}
+//           if (!pathTemplate) {
+//             throw new Error(`Path for function ${functionName} not found`)
+//           }
 
-        if (isRequestInBody) {
-          // If the type is set to body
-          let headers = {
-            "Content-Type": "application/json"
-          }
+//           const path = pathTemplate.replace(/:(\w+)/g, (_, paramName) => {
+//             const value = parsedArgs.parameters[paramName]
+//             if (!value) {
+//               throw new Error(
+//                 `Parameter ${paramName} not found for function ${functionName}`
+//               )
+//             }
+//             return encodeURIComponent(value)
+//           })
 
-          // Check if custom headers are set
-          const customHeaders = schemaDetail.headers // Moved this line up to the loop
-          // Check if custom headers are set and are of type string
-          if (customHeaders && typeof customHeaders === "string") {
-            let parsedCustomHeaders = JSON.parse(customHeaders) as Record<
-              string,
-              string
-            >
+//           if (!path) {
+//             throw new Error(`Path for function ${functionName} not found`)
+//           }
 
-            headers = {
-              ...headers,
-              ...parsedCustomHeaders
-            }
-          }
+//           // Determine if the request should be in the body or as a query
+//           const isRequestInBody = schemaDetail.requestInBody
+//           let data = {}
 
-          const fullUrl = schemaDetail.url + path
+//           if (isRequestInBody) {
+//             // If the type is set to body
+//             let headers = {
+//               "Content-Type": "application/json"
+//             }
 
-          const bodyContent = parsedArgs.requestBody || parsedArgs
+//             // Check if custom headers are set
+//             const customHeaders = schemaDetail.headers // Moved this line up to the loop
+//             // Check if custom headers are set and are of type string
+//             if (customHeaders && typeof customHeaders === "string") {
+//               let parsedCustomHeaders = JSON.parse(customHeaders) as Record<
+//                 string,
+//                 string
+//               >
 
-          const requestInit = {
-            method: "POST",
-            headers,
-            body: JSON.stringify(bodyContent) // Use the extracted requestBody or the entire parsedArgs
-          }
+//               headers = {
+//                 ...headers,
+//                 ...parsedCustomHeaders
+//               }
+//             }
 
-          const response = await fetch(fullUrl, requestInit)
+//             const fullUrl = schemaDetail.url + path
 
-          if (!response.ok) {
-            data = {
-              error: response.statusText
-            }
-          } else {
-            data = await response.json()
-          }
-        } else {
-          // If the type is set to query
-          const queryParams = new URLSearchParams(
-            parsedArgs.parameters
-          ).toString()
-          const fullUrl =
-            schemaDetail.url + path + (queryParams ? "?" + queryParams : "")
+//             const bodyContent = parsedArgs.requestBody || parsedArgs
 
-          let headers = {}
+//             const requestInit = {
+//               method: "POST",
+//               headers,
+//               body: JSON.stringify(bodyContent) // Use the extracted requestBody or the entire parsedArgs
+//             }
 
-          // Check if custom headers are set
-          const customHeaders = schemaDetail.headers
-          if (customHeaders && typeof customHeaders === "string") {
-            headers = JSON.parse(customHeaders)
-          }
+//             const response = await fetch(fullUrl, requestInit)
 
-          const response = await fetch(fullUrl, {
-            method: "GET",
-            headers: headers
-          })
+//             if (!response.ok) {
+//               data = {
+//                 error: response.statusText
+//               }
+//             } else {
+//               data = await response.json()
+//             }
+//           } else {
+//             // If the type is set to query
+//             const queryParams = new URLSearchParams(
+//               parsedArgs.parameters
+//             ).toString()
+//             const fullUrl =
+//               schemaDetail.url + path + (queryParams ? "?" + queryParams : "")
 
-          if (!response.ok) {
-            data = {
-              error: response.statusText
-            }
-          } else {
-            data = await response.json()
-          }
-        }
+//             let headers = {}
 
-        messages.push({
-          mcp_call_id: mcpCall.id,
-          role: "mcp",
-          name: functionName,
-          content: JSON.stringify(data)
-        })
-      }
-    }
+//             // Check if custom headers are set
+//             const customHeaders = schemaDetail.headers
+//             if (customHeaders && typeof customHeaders === "string") {
+//               headers = JSON.parse(customHeaders)
+//             }
 
-    const secondResponse = await openai.chat.completions.create({
-      model: chatSettings.model as ChatCompletionCreateParamsBase["model"],
-      messages,
-      stream: true
-    })
+//             const response = await fetch(fullUrl, {
+//               method: "GET",
+//               headers: headers
+//             })
 
-    const stream = OpenAIStream(secondResponse)
+//             if (!response.ok) {
+//               data = {
+//                 error: response.statusText
+//               }
+//             } else {
+//               data = await response.json()
+//             }
+//           }
 
-    return new StreamingTextResponse(stream)
-  } catch (error: any) {
-    console.error(error)
-    const errorMessage = error.error?.message || "An unexpected error occurred"
-    const errorCode = error.status || 500
-    return new Response(JSON.stringify({ message: errorMessage }), {
-      status: errorCode
-    })
-  }
-}
+//           messages.push({
+//             tool_call_id: toolCall.id,
+//             role: "tool",
+//             name: functionName,
+//             content: JSON.stringify(data)
+//           })
+//         }
+//       }
+
+//       const secondResponse = await openai.chat.completions.create({
+//         model: chatSettings.model as ChatCompletionCreateParamsBase["model"],
+//         messages,
+//         stream: true
+//       })
+
+//       const stream = OpenAIStream(secondResponse)
+
+//       return new StreamingTextResponse(stream)
+//     } catch (error: any) {
+//       console.error(error)
+//       const errorMessage = error.error?.message || "An unexpected error occurred"
+//       const errorCode = error.status || 500
+//       return new Response(JSON.stringify({ message: errorMessage }), {
+//         status: errorCode
+//       })
+//     }
+//   }
+// }

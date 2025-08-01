@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label"
 import { TextareaAutosize } from "@/components/ui/textarea-autosize"
 import { ChatbotUIContext } from "@/context/context"
 import { MCP_DESCRIPTION_MAX, MCP_NAME_MAX } from "@/db/limits"
-import { validateOpenAPI } from "@/lib/openapi-conversion"
+import { validateMcpServer } from "@/lib/mcpserver-conversion"
 import { TablesInsert } from "@/supabase/types"
 import { FC, useContext, useState } from "react"
 
@@ -126,7 +126,7 @@ export const CreateMcp: FC<CreateMcpProps> = ({ isOpen, onOpenChange }) => {
 
                 try {
                   const parsedSchema = JSON.parse(value)
-                  // validateOpenAPI(parsedSchema)
+                  validateMcpServer(parsedSchema)
                   //   .then(() => setSchemaError("")) // Clear error if validation is successful
                   //   .catch(error => setSchemaError(error.message)) // Set specific validation error message
                 } catch (error) {

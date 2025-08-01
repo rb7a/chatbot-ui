@@ -2,7 +2,7 @@
   "New": "Neu",
   "Show Workspaces": "Arbeitsbereiche anzeigen",
   "Show Help": "Hilfe anzeigen",
-  "Ask anything. Type @  /  #  !": "Geben Sie hier Text ein: / - Hinweis, @ - Assistent, # - Datei, ! - Werkzeug",
+  "Ask anything. Type @  /  #  ! ~": "Geben Sie hier Text ein: / - Hinweis, @ - Assistent, # - Datei, ! - Werkzeug, ~ - MCP",
   "Settings": "Einstellungen",
   "The LLM's response may contain errors. Please verify all important information.": "Die Antwort des LLM kann Fehler enthalten. Bitte überprüfen Sie alle wichtigen Informationen.",
   "Focus Chat": "Chat fokussieren",

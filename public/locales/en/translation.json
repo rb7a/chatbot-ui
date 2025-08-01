@@ -2,7 +2,7 @@
   "New": "New",
   "Show Workspaces": "Show Workspaces",
   "Show Help": "Show Help",
-  "Ask anything. Type @  /  #  !": "Type anything. Use / for suggestions, @ for assistant, # for file, ! for tool",
+  "Ask anything. Type @  /  #  ! ~": "Type anything. Use / for suggestions, @ for assistant, # for file, ! for tool ~ for MCP",
   "Settings": "Settings",
   "The LLM's response may contain errors. Please verify all important information." : "The LLM's response may contain errors. Please verify all important information.",
   "Focus Chat": "Focus Chat",
